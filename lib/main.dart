@@ -4,6 +4,8 @@ import 'package:encuestas_system/ui/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'ui/screens/encuesta_screen/encuesta_screen.dart';
+
 void main() => runApp(AppState());
 
 class AppState extends StatefulWidget {
@@ -31,6 +33,7 @@ class MyApp extends StatelessWidget {
       initialRoute: 'lista_encuesta',
       routes: {
         'lista_encuesta': (_) => ListaEncuestaScreen(),
+        'encuesta': (_) => EncuestaScreen(),
       },
       debugShowCheckedModeBanner: false,
     );

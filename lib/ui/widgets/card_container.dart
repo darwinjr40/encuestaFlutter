@@ -11,17 +11,18 @@ class CardContainer extends StatelessWidget {
         border: Border.all(
           color: Color.fromRGBO(164, 164, 166, 1.0),
         ),
+        color: Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(10.0)),
         boxShadow: [
           BoxShadow(
             color: Color.fromRGBO(164, 164, 166, 1.0),
-            spreadRadius: 3,
-            blurRadius: 7,
-            offset: Offset(0, 3),
+            spreadRadius: 0.2,
+            blurRadius: 3,
+            offset: Offset(0, 1),
           ),
         ],
       ),
-      padding: EdgeInsets.all(10.0),
+      padding: EdgeInsets.all(15.0),
       child: this.child,
     );
   }

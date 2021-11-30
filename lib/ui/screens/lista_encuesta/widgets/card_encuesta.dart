@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class CardEncuesta extends StatelessWidget {
   final Encuesta encuesta;
 
-  const CardEncuesta({Key? key, required this.encuesta}) : super(key: key);
+  const CardEncuesta({required this.encuesta});
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +16,7 @@ class CardEncuesta extends StatelessWidget {
           greenLine(),
           descripcion(encuesta.descripcion),
           seccionesText(encuesta.cantSecciones),
+          verEncuestaButton(context),
         ],
         /* padding:
             EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0, bottom: 20.0),
@@ -28,18 +29,25 @@ class CardEncuesta extends StatelessWidget {
   }
 
   Widget titulo(String titulo) {
-    return Text(
-      titulo,
-      style: TextStyle(
-        color: Color.fromRGBO(44, 44, 44, 1.0),
+    return Padding(
+      padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
+      child: Align(
+        alignment: Alignment.topLeft,
+        child: Text(
+          titulo,
+          style:
+              TextStyle(color: Color.fromRGBO(44, 44, 44, 1.0), fontSize: 20.0),
+          textAlign: TextAlign.start,
+        ),
       ),
     );
   }
 
   Widget greenLine() {
-    return Expanded(
+    return Padding(
+      padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
       child: Container(
-        height: 10.0,
+        height: 1.0,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
           color: Color.fromRGBO(59, 210, 127, 1.0),
@@ -49,30 +57,67 @@ class CardEncuesta extends StatelessWidget {
   }
 
   Widget descripcion(String descripcion) {
-    return Container(
-      child: Text(
-        descripcion,
-        overflow: TextOverflow.ellipsis,
-      ),
-    );
-  }
-
-  Widget seccionesText(int n) {
-    return Container(
-      child: Text(
-        'Secciones: $n',
-        style: TextStyle(
-          color: Color.fromRGBO(59, 210, 127, 1.0),
+    return Padding(
+      padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
+      child: Container(
+        child: Align(
+          alignment: Alignment.topLeft,
+          child: Text(
+            descripcion,
+            style: TextStyle(fontSize: 15.0),
+            // overflow: TextOverflow.ellipsis,
+          ),
         ),
       ),
     );
   }
 
-  Widget verEncuestaButton() {
-    return ElevatedButton(
-      onPressed: () {},
-      child: Center(
-        child: Text('Ver Encuesta'),
+  Widget seccionesText(int n) {
+    return Padding(
+      padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
+      child: Container(
+        child: Align(
+          alignment: Alignment.topLeft,
+          child: Text(
+            'Secciones: $n',
+            style: TextStyle(
+              color: Color.fromRGBO(59, 210, 127, 1.0),
+              fontSize: 16.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget verEncuestaButton(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
+      child: ElevatedButton(
+        style: ButtonStyle(
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18.0),
+            ),
+          ),
+          backgroundColor: MaterialStateProperty.all(
+            Color.fromRGBO(61, 61, 61, 1.0),
+          ),
+        ),
+
+        /* style: ElevatedButton.styleFrom(
+          primary: Color.fromRGBO(61, 61, 61, 1.0),
+        ), */
+        onPressed: () {
+          Navigator.pushNamed(context, 'encuesta', arguments: encuesta);
+        },
+        child: Center(
+          child: Text(
+            'Ver Encuesta',
+            style: TextStyle(fontSize: 15.0),
+          ),
+        ),
       ),
     );
   }

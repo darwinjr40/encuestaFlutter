@@ -60,21 +60,49 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
         print(snapshot);
         if (!snapshot.hasData) {
           return Container(
+            padding: EdgeInsets.all(20.0),
             child: ListTile(
               title: Text('No hay encuestas'),
             ),
           );
         }
-        return ListView(
-          children: _cargarEncuestas(snapshot.data, context),
+        print('si hay encuestas');
+        return Container(
+          padding: EdgeInsets.all(10.0),
+          child: ListView(
+            children:
+                /* CardEncuesta(
+              encuesta: new Encuesta(
+                idEncuesta: 1,
+                nombreE: 'nombreE',
+                descripcion: 'descripcion',
+                cantSecciones: 3,
+                estado: true,
+              ),
+            ) */
+                _cargarEncuestas(snapshot.data, context),
+          ),
         );
       },
     );
   }
 
   List<Widget> _cargarEncuestas(List<dynamic>? data, BuildContext? context) {
-    print('si hay encuestas');
-    return [];
+    // print(data);
+    List<Widget> lista = [];
+    print('data');
+    _encuestas = [];
+    for (var encuesta in data!) {
+      _encuestas.add(encuesta);
+    }
+    print('_encuestas: $_encuestas');
+    for (var encuesta in _encuestas) {
+      lista.add(CardEncuesta(encuesta: encuesta));
+      lista.add(SizedBox(
+        height: 20,
+      ));
+    }
+    return lista;
   }
 
   Future<void> _recargarLista() async {
