@@ -40,12 +40,18 @@ class _EncuestaScreenState extends State<EncuestaScreen> {
       builder: (context, AsyncSnapshot<Encuesta> snapshot) {
         print(snapshot);
         if (!snapshot.hasData) {
-          return Container(
+          return Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(
+                  Color.fromRGBO(59, 210, 127, 1)),
+            ),
+          );
+          /* Container(
             padding: EdgeInsets.all(20.0),
             child: ListTile(
               title: Text('No hay secciones'),
             ),
-          );
+          ); */
         }
         print('si hay secciones');
         return Container(

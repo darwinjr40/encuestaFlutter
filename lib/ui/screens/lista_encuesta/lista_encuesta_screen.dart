@@ -59,12 +59,18 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
       builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
         print(snapshot);
         if (!snapshot.hasData) {
-          return Container(
+          return Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(
+                  Color.fromRGBO(59, 210, 127, 1)),
+            ),
+          );
+          /* Container(
             padding: EdgeInsets.all(20.0),
             child: ListTile(
               title: Text('No hay encuestas'),
             ),
-          );
+          ); */
         }
         print('si hay encuestas');
         return Container(
