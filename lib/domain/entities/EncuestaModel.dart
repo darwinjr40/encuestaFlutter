@@ -27,7 +27,7 @@ class Encuesta {
         idEncuesta: json["id_encuesta"],
         nombreE: json["nombre_e"],
         descripcion: json['descripcion'],
-        secciones: (json['secciones'] != null)
+        secciones: (json['seccion'] != null)
             ? List<Seccion>.from(json["seccion"].map((x) => Seccion.fromMap(x)))
             : [],
         cantSecciones: json["cant_secciones"],

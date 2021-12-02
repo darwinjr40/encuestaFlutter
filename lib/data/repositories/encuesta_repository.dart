@@ -8,9 +8,19 @@ import 'package:provider/provider.dart';
 class EncuestaRepository extends ChangeNotifier
     implements AbstractEncuestaRepository {
   @override
-  Future<Encuesta> getEncuestaRelacional(int id) {
-    // TODO: implement getEncuestaRelacional
-    throw UnimplementedError();
+  Future<Encuesta> getEncuestaRelacional(int id) async {
+    Encuesta encuesta;
+
+    var response = await http.get(Uri.parse(
+        'https://encuesta-login-web.herokuapp.com/API/encuestas/A/getEncuesta/$id'));
+
+    var jsonResponse = convert.jsonDecode(response.body);
+    print('json response: $jsonResponse');
+
+    encuesta = Encuesta.fromMap(jsonResponse);
+    print(
+        'cantidad de secciones en la respuesta json: ${encuesta.secciones!.length}');
+    return encuesta;
   }
 
   @override

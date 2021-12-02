@@ -70,17 +70,7 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
         return Container(
           padding: EdgeInsets.all(10.0),
           child: ListView(
-            children:
-                /* CardEncuesta(
-              encuesta: new Encuesta(
-                idEncuesta: 1,
-                nombreE: 'nombreE',
-                descripcion: 'descripcion',
-                cantSecciones: 3,
-                estado: true,
-              ),
-            ) */
-                _cargarEncuestas(snapshot.data, context),
+            children: _cargarEncuestas(snapshot.data, context),
           ),
         );
       },

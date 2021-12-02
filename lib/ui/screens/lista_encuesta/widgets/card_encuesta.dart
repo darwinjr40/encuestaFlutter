@@ -64,7 +64,8 @@ class CardEncuesta extends StatelessWidget {
           alignment: Alignment.topLeft,
           child: Text(
             descripcion,
-            style: TextStyle(fontSize: 15.0),
+            style: TextStyle(
+                fontSize: 15.0, color: Color.fromRGBO(123, 123, 123, 1.0)),
             // overflow: TextOverflow.ellipsis,
           ),
         ),
