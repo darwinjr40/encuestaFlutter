@@ -4,13 +4,13 @@ import 'package:encuestas_system/domain/entities/Pregunta.dart';
 
 class Seccion {
   Seccion({
-    required this.idSeccion,
+    this.idSeccion,
     required this.nombreS,
     required this.preguntas,
     required this.cantPreguntas,
   });
 
-  int idSeccion;
+  int? idSeccion;
   String nombreS;
   List<Pregunta> preguntas;
   int cantPreguntas;

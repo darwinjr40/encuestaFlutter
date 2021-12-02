@@ -1,5 +1,5 @@
 import 'package:encuestas_system/data/repositories/encuesta_repository.dart';
-import 'package:encuestas_system/domain/services/services.dart';
+import 'package:encuestas_system/ui/screens/encuesta_screen/encuesta_no_relacional_screen.dart';
 import 'package:encuestas_system/ui/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +25,7 @@ class _AppStateState extends State<AppState> {
   }
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
       routes: {
         'lista_encuesta': (_) => ListaEncuestaScreen(),
         'encuesta': (_) => EncuestaScreen(),
+        'encuestaNoRelacional': (_) =>EncuestaNoRelacionalScreen()
       },
       debugShowCheckedModeBanner: false,
     );

@@ -8,7 +8,7 @@ class Pregunta {
     required this.opDeResp,
   });
 
-  int idPregunta;
+  String idPregunta;
   String nombreP;
   String tipo;
   List<String> opDeResp;
@@ -18,14 +18,14 @@ class Pregunta {
   String toJson() => json.encode(toMap());
 
   factory Pregunta.fromMap(Map<String, dynamic> json) => Pregunta(
-        idPregunta: json["id_pregunta"],
+        idPregunta: json["id_pregunta"].toString(),
         nombreP: json["nombre_p"],
         tipo: json["tipo"],
         opDeResp: List<String>.from(json["op_de_resp"].map((x) => x)),
       );
 
   Map<String, dynamic> toMap() => {
-        "id_pregunta": idPregunta,
+        "id_pregunta": idPregunta.toString(),
         "nombre_p": nombreP,
         "tipo": tipo,
         "op_de_resp": List<dynamic>.from(opDeResp.map((x) => x)),
