@@ -12,7 +12,7 @@ class Encuesta {
     required this.estado,
   });
 
-  int idEncuesta;
+  String idEncuesta;
   String nombreE;
   String descripcion;
   List<Seccion>? secciones;
@@ -24,7 +24,7 @@ class Encuesta {
   String toJson() => json.encode(toMap());
 
   factory Encuesta.fromMap(Map<String, dynamic> json) => Encuesta(
-        idEncuesta: json["id_encuesta"],
+        idEncuesta: json["id_encuesta"].toString(),
         nombreE: json["nombre_e"],
         descripcion: json['descripcion'],
         secciones: (json['seccion'] != null)
@@ -35,7 +35,7 @@ class Encuesta {
       );
 
   Map<String, dynamic> toMap() => {
-        "id_encuesta": idEncuesta,
+        "id_encuesta": idEncuesta.toString(),
         "nombre_e": nombreE,
         "seccion": List<dynamic>.from(secciones!.map((x) => x.toMap())),
         "cant_secciones": cantSecciones,
