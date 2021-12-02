@@ -73,13 +73,16 @@ class _EncuestaScreenState extends State<EncuestaScreen> {
 
   List<Widget> _cargarSecciones(Encuesta data, BuildContext? context) {
     List<Widget> listaSeccionesPage = [];
+    int index = 0;
     Encuesta encuesta = data;
     print('cargar secciones: $data');
     print('cantidad de secciones: ${encuesta.secciones!.length}');
     for (var seccion in encuesta.secciones!) {
       listaSeccionesPage.add(SeccionScreen(
         seccion: seccion,
+        index: index,
       ));
+      index++;
       print('seccion: $seccion');
     }
     print('data: $data');

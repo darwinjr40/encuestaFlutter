@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 
 class SeccionScreen extends StatefulWidget {
   final Seccion seccion;
+  final int index;
 
-  const SeccionScreen({required this.seccion});
+  const SeccionScreen({required this.seccion, required this.index});
   @override
   _SeccionScreenState createState() => _SeccionScreenState();
 }
@@ -20,7 +21,12 @@ class _SeccionScreenState extends State<SeccionScreen> {
       padding: EdgeInsets.all(10.0),
       child: ListView(
         children: [
-          nombreSeccion(widget.seccion.nombreS),
+          Row(
+            children: [
+              nombreSeccion(widget.seccion.nombreS),
+            ],
+          ),
+          greenLine(),
           Column(
             children: cargarPreguntas(widget.seccion.preguntas),
           )
@@ -31,9 +37,12 @@ class _SeccionScreenState extends State<SeccionScreen> {
 
   Widget nombreSeccion(String nombreSeccion) {
     return Padding(
-      padding: EdgeInsets.all(10.0),
+      padding: EdgeInsets.only(bottom: 2.0),
       child: Container(
-        child: Text(nombreSeccion),
+        child: Text(
+          nombreSeccion,
+          style: TextStyle(fontSize: 18.0),
+        ),
       ),
     );
   }
@@ -52,5 +61,18 @@ class _SeccionScreenState extends State<SeccionScreen> {
     }
 
     return preguntasCard;
+  }
+
+  Widget greenLine() {
+    return Padding(
+      padding: EdgeInsets.only(top: 5.0, bottom: 15.0),
+      child: Container(
+        height: 2.0,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          color: Color.fromRGBO(59, 210, 127, 1.0),
+        ),
+      ),
+    );
   }
 }
