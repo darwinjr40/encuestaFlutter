@@ -7,8 +7,10 @@ import 'package:flutter/material.dart';
 class SeccionScreen extends StatefulWidget {
   final Seccion seccion;
   final int index;
+  final int max;
 
-  const SeccionScreen({required this.seccion, required this.index});
+  const SeccionScreen(
+      {required this.seccion, required this.index, required this.max});
   @override
   _SeccionScreenState createState() => _SeccionScreenState();
 }
@@ -24,6 +26,8 @@ class _SeccionScreenState extends State<SeccionScreen> {
           Row(
             children: [
               nombreSeccion(widget.seccion.nombreS),
+              Expanded(child: SizedBox()),
+              seccionIndex(),
             ],
           ),
           greenLine(),
@@ -61,6 +65,12 @@ class _SeccionScreenState extends State<SeccionScreen> {
     }
 
     return preguntasCard;
+  }
+
+  Widget seccionIndex() {
+    return Container(
+      child: Text('sección ${widget.index} de ${widget.max}'),
+    );
   }
 
   Widget greenLine() {

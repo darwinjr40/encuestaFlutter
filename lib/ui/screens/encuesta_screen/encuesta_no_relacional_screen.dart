@@ -39,7 +39,7 @@ class _EncuestaNoRelacionalScreenState
       builder: (context, AsyncSnapshot<Encuesta> snapshot) {
         print(snapshot);
         if (!snapshot.hasData) {
-           return Center(
+          return Center(
             child: CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(
                   Color.fromRGBO(59, 210, 127, 1)),
@@ -66,14 +66,18 @@ class _EncuestaNoRelacionalScreenState
 
   List<Widget> _cargarSecciones(Encuesta data, BuildContext? context) {
     List<Widget> listaSeccionesPage = [];
+    int index = 1;
     Encuesta encuesta = data;
     print(encuesta);
     //print('cargar secciones: $data');
     //print('cantidad de secciones: ${encuesta.secciones!.length}');
     for (var seccion in encuesta.secciones!) {
       listaSeccionesPage.add(SeccionScreen(
+        index: index,
         seccion: seccion,
+        max: encuesta.cantSecciones,
       ));
+      index++;
       print('seccion: $seccion');
     }
     print('data: $data');

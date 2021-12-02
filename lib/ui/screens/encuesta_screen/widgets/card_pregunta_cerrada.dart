@@ -12,6 +12,7 @@ class CardPreguntaCerrada extends StatefulWidget {
 }
 
 class _CardPreguntaCerradaState extends State<CardPreguntaCerrada> {
+  String opcionSeleccionada = '';
   @override
   Widget build(BuildContext context) {
     return CardContainer(
@@ -72,6 +73,7 @@ class OpcionButton extends StatefulWidget {
 }
 
 class _OpcionButtonState extends State<OpcionButton> {
+  String opcionSeleccionada = '';
   bool isSelected = false;
 
   Color selected = Color.fromRGBO(59, 210, 127, 1);
@@ -126,4 +128,6 @@ class _OpcionButtonState extends State<OpcionButton> {
       ),
     );
   }
+
+  void cambiarColor() {}
 }

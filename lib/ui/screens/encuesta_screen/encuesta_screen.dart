@@ -67,7 +67,8 @@ class _EncuestaScreenState extends State<EncuestaScreen> {
     );
   }
 
-    Widget listarSeccionesNoRelacionales(BuildContext context, Encuesta encuesta) {
+  Widget listarSeccionesNoRelacionales(
+      BuildContext context, Encuesta encuesta) {
     final encuestaService =
         Provider.of<EncuestaRepository>(context, listen: false);
     return FutureBuilder(
@@ -102,7 +103,7 @@ class _EncuestaScreenState extends State<EncuestaScreen> {
 
   List<Widget> _cargarSecciones(Encuesta data, BuildContext? context) {
     List<Widget> listaSeccionesPage = [];
-    int index = 0;
+    int index = 1;
     Encuesta encuesta = data;
     print('cargar secciones: $data');
     print('cantidad de secciones: ${encuesta.secciones!.length}');
@@ -110,6 +111,7 @@ class _EncuestaScreenState extends State<EncuestaScreen> {
       listaSeccionesPage.add(SeccionScreen(
         seccion: seccion,
         index: index,
+        max: encuesta.cantSecciones,
       ));
       index++;
       print('seccion: $seccion');
