@@ -43,7 +43,7 @@ class _SeccionScreenState extends State<SeccionScreen> {
     for (var pregunta in preguntas) {
       if (pregunta.tipo == 'simple')
         preguntasCard.add(CardPreguntaCerrada(pregunta: pregunta));
-      if (pregunta.tipo == 'compuesta')
+      if (pregunta.tipo == 'multiple')
         preguntasCard.add(CardPreguntaMultiple(pregunta: pregunta));
       if (pregunta.tipo == 'abierta')
         preguntasCard.add(CardPreguntaAbierta(pregunta: pregunta));

@@ -92,31 +92,35 @@ class _OpcionButtonState extends State<OpcionButton> {
     return GestureDetector(
       onTap: () {
         setState(() {
-          color = selected;
+          if (!isSelected) {
+            color = selected;
+            textColor = textSelectedColor;
+            isSelected = !isSelected;
+          } else {
+            color = noSelected;
+            textColor = textNoSelectedColor;
+            isSelected = !isSelected;
+          }
         });
       },
       child: Padding(
-        padding: const EdgeInsets.all(5.0),
+        padding: const EdgeInsets.all(6.0),
         child: Container(
+          width: 330.0,
           decoration: BoxDecoration(
             border: Border.all(
               color: Color.fromRGBO(164, 164, 166, 1.0),
             ),
             color: color,
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            /* boxShadow: [
-              BoxShadow(
-                color: Color.fromRGBO(164, 164, 166, 1.0),
-                spreadRadius: 0.2,
-                blurRadius: 3,
-                offset: Offset(0, 1),
-              ),
-            ], */
           ),
-          padding: EdgeInsets.all(10.0),
-          child: Text(
-            widget.opcion,
-            style: TextStyle(fontSize: 15.0, color: textColor),
+          padding: EdgeInsets.all(4.0),
+          child: Align(
+            alignment: Alignment.center,
+            child: Text(
+              widget.opcion,
+              style: TextStyle(fontSize: 20.0, color: textColor),
+            ),
           ),
         ),
       ),
