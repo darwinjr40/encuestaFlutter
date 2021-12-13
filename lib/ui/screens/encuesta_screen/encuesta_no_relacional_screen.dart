@@ -24,9 +24,6 @@ class _EncuestaNoRelacionalScreenState
         backgroundColor: Color.fromRGBO(59, 210, 127, 1.0),
       ),
       body: listarSeccionesNoRelacionales(context, encuesta),
-      /* body: PageView(
-        children: listarSecciones(context),
-      ), */
     );
   }
 
@@ -48,16 +45,9 @@ class _EncuestaNoRelacionalScreenState
         }
         print('si hay secciones');
         return Container(
-          // color: Colors.red,
           padding: EdgeInsets.all(10.0),
           child: PageView(
-            children: _cargarSecciones(snapshot.data!,
-                context) /* [
-              Container(color: Colors.green),
-              Container(color: Colors.purple),
-              Container(color: Colors.black),
-            ] */
-            ,
+            children: _cargarSecciones(snapshot.data!, context),
           ),
         );
       },

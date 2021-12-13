@@ -6,15 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ListaEncuestaScreen extends StatefulWidget {
-  //todo: instanciar el provider de la lista de encuestas
-
   @override
   _ListaEncuestaScreenState createState() => _ListaEncuestaScreenState();
 }
 
 class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
   int _paginaActual = 0;
-  List<Widget> _paginas = [];
+  //List<Widget> _paginas = [];
   List<Encuesta> _encuestas = [];
   List<CardEncuesta> _listaCardEncuestas = [];
 
@@ -34,8 +32,10 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
           )
         ],
       ),
-      body: _paginaActual == 0? listarEncuestas(context) : listarEncuestasNoRelacional(context),
-      bottomNavigationBar: BottomNavigationBar(
+      body: _paginaActual == 0
+          ? listarEncuestasNoRelacional(context)
+          : listarEncuestas(context),
+      /* bottomNavigationBar: BottomNavigationBar(
         onTap: (index) {
           setState(() {
             _paginaActual = index;
@@ -52,7 +52,7 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
             label: 'No Relacional',
           ),
         ],
-      ),
+      ), */
     );
   }
 
@@ -88,7 +88,7 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
     );
   }
 
-   Widget listarEncuestasNoRelacional(BuildContext context) {
+  Widget listarEncuestasNoRelacional(BuildContext context) {
     final encuestaService =
         Provider.of<EncuestaRepository>(context, listen: false);
     return FutureBuilder(
@@ -132,7 +132,8 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
     return lista;
   }
 
-  List<Widget> _cargarEncuestasNoRelacional(List<dynamic>? data, BuildContext? context) {
+  List<Widget> _cargarEncuestasNoRelacional(
+      List<dynamic>? data, BuildContext? context) {
     // print(data);
     List<Widget> lista = [];
     print('data');
@@ -149,6 +150,7 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
     }
     return lista;
   }
+
   Future<void> _recargarLista() async {
     _listaCardEncuestas = [];
     setState(() {});

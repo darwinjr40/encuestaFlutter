@@ -111,11 +111,12 @@ class CardEncuestaNoRelacional extends StatelessWidget {
           primary: Color.fromRGBO(61, 61, 61, 1.0),
         ), */
         onPressed: () {
-          Navigator.pushNamed(context, 'encuestaNoRelacional', arguments: encuesta);
+          Navigator.pushNamed(context, 'encuestaNoRelacional',
+              arguments: encuesta);
         },
         child: Center(
           child: Text(
-            'Ver Encuesta',
+            'Aplicar Encuesta',
             style: TextStyle(fontSize: 15.0),
           ),
         ),

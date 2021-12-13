@@ -13,20 +13,16 @@ class CardPreguntaCerrada extends StatefulWidget {
 
 class _CardPreguntaCerradaState extends State<CardPreguntaCerrada> {
   String opcionSeleccionada = '';
+  String selected = 'no response';
   @override
   Widget build(BuildContext context) {
     return CardContainer(
       child: Column(
         children: [
           nombre(widget.pregunta.nombreP),
-          opciones(widget.pregunta.opDeResp),
+          opciones(widget.pregunta.opciones),
+          Text(widget.pregunta.idPregunta),
         ],
-        /* padding:
-            EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0, bottom: 20.0),
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.blueAccent),
-          color: Colors.red,
-        ), */
       ),
     );
   }
@@ -48,31 +44,122 @@ class _CardPreguntaCerradaState extends State<CardPreguntaCerrada> {
     );
   }
 
-  Widget opciones(List<String> opciones) {
+  Widget opciones(List<Opcion> opciones) {
     return Column(
       children: getOpciones(opciones),
     );
   }
 
-  List<Widget> getOpciones(List<String> opciones) {
+  List<Widget> getOpciones(List<Opcion> opciones) {
     List<Widget> listaOpcionesButton = [];
     for (var i = 0; i < opciones.length; i++) {
-      listaOpcionesButton.add(OpcionButton(opcion: opciones[i]));
+      listaOpcionesButton.add(ListTile(
+        title: Text(opciones[i].nombre),
+        leading: Radio<String>(
+          value: opciones[i].nombre,
+          groupValue: selected,
+          onChanged: (value) {
+            setState(() {
+              //selectedRadio = value as int;
+              selected = value as String;
+              print(selected);
+            });
+          },
+          activeColor: Color.fromRGBO(59, 210, 127, 1),
+        ),
+      ));
+
+      //listaOpcionesButton.add(OpcionSelection(opcion: opciones[i]));
+      /* listaOpcionesButton.add(SizedBox(
+        height: 10.0,
+      )); */
     }
     return listaOpcionesButton;
   }
 }
 
-class OpcionButton extends StatefulWidget {
+// * YA NO LO UTILIZO:
+/* class OpcionSelection extends StatefulWidget {
+  final String opcion;
+
+  const OpcionSelection({required this.opcion});
+  @override
+  _OpcionSelectionState createState() => _OpcionSelectionState();
+} */
+
+/* class _OpcionSelectionState extends State<OpcionSelection> {
+  bool isSelected = false;
+
+  Color selected = Color.fromRGBO(59, 210, 127, 1);
+  Color noSelected = Color.fromRGBO(255, 255, 255, 1.0);
+
+  Color color = Color.fromRGBO(255, 255, 255, 1.0);
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          if (!isSelected) {
+            color = selected;
+            isSelected = !isSelected;
+          } else {
+            color = noSelected;
+            isSelected = !isSelected;
+          }
+        });
+      },
+      child: Container(
+        child: Row(
+          children: [
+            Container(
+              width: 30.0,
+              height: 30.0,
+              padding: EdgeInsets.all(5.0),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Color.fromRGBO(164, 164, 166, 1.0),
+                ),
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(50.0)),
+              ),
+              child: Container(
+                width: 20.0,
+                height: 20.0,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: color,
+                  ),
+                  color: color,
+                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                ),
+              ),
+            ),
+            SizedBox(width: 30.0),
+            Expanded(
+              child: Text(
+                widget.opcion,
+                style: TextStyle(fontSize: 17.0),
+                // overflow: TextOverflow.fade,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+} */
+
+// * YA NO LO UTILIZO :
+/* class OpcionButton extends StatefulWidget {
   final String opcion;
 
   const OpcionButton({required this.opcion});
 
   @override
   _OpcionButtonState createState() => _OpcionButtonState();
-}
+} */
 
-class _OpcionButtonState extends State<OpcionButton> {
+/* class _OpcionButtonState extends State<OpcionButton> {
   String opcionSeleccionada = '';
   bool isSelected = false;
 
@@ -85,9 +172,6 @@ class _OpcionButtonState extends State<OpcionButton> {
 
   Color textColor = Color.fromRGBO(98, 98, 98, 1.0);
 
-  //to do:
-  //metodo para pintar todos los botones en blanco al seleccionar una opcion diferente
-  //metodo para pintar el boton tocado
 
   @override
   Widget build(BuildContext context) {
@@ -130,4 +214,4 @@ class _OpcionButtonState extends State<OpcionButton> {
   }
 
   void cambiarColor() {}
-}
+} */

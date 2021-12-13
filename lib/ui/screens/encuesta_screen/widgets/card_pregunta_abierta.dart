@@ -54,7 +54,7 @@ class _CardPreguntaAbiertaState extends State<CardPreguntaAbierta> {
         borderRadius: BorderRadius.all(Radius.circular(10.0)),
       ),
       child: TextField(
-        maxLines: 10,
+        maxLines: 4,
         cursorColor: Color.fromRGBO(44, 44, 44, 1.0),
       ),
     );

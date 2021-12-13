@@ -1,17 +1,20 @@
 import 'package:encuestas_system/domain/entities/models.dart';
+import 'package:encuestas_system/ui/screens/encuesta_screen/widgets/checkbox.dart';
 import 'package:encuestas_system/ui/widgets/card_container.dart';
 import 'package:flutter/material.dart';
 
 class CardPreguntaMultiple extends StatefulWidget {
   final Pregunta pregunta;
 
-  const CardPreguntaMultiple({required this.pregunta});
+  CardPreguntaMultiple({required this.pregunta});
 
   @override
   _CardPreguntaMultipleState createState() => _CardPreguntaMultipleState();
 }
 
 class _CardPreguntaMultipleState extends State<CardPreguntaMultiple> {
+  bool state = false;
+
   @override
   Widget build(BuildContext context) {
     return CardContainer(
@@ -41,6 +44,15 @@ class _CardPreguntaMultipleState extends State<CardPreguntaMultiple> {
     );
   }
 
+  List<CheckBoxState> getCheckBoxStateList() {
+    List<CheckBoxState> list = [];
+    for (var opcion in widget.pregunta.opciones) {
+      CheckBoxState state = new CheckBoxState(opcion: opcion.nombre);
+      list.add(state);
+    }
+    return list;
+  }
+
   Widget opciones(List<String> opciones) {
     return Column(
       children: getOpciones(opciones),
@@ -49,76 +61,50 @@ class _CardPreguntaMultipleState extends State<CardPreguntaMultiple> {
 
   List<Widget> getOpciones(List<String> opciones) {
     List<Widget> listaOpcionesButton = [];
+    List<CheckBoxState> states = getCheckBoxStateList();
+
     for (var i = 0; i < opciones.length; i++) {
+      listaOpcionesButton.add(new CheckBoxOption(opcion: opciones[i]));
+      print('se ejecuta el for');
       // listaOpcionesButton.add(Text(opciones[i]));
-      listaOpcionesButton.add(OpcionSelection(opcion: opciones[i]));
+      /* listaOpcionesButton.add(OpcionSelection(opcion: opciones[i]));
       listaOpcionesButton.add(SizedBox(
         height: 10.0,
-      ));
+      )); */
     }
     return listaOpcionesButton;
   }
 
-  Widget opcion(String opcion) {
-    return Container(
-      child: Row(
-        children: [],
-      ),
-    );
-  }
+  Widget buildSingleCheckbox(CheckBoxState checkbox) => CheckboxListTile(
+        controlAffinity: ListTileControlAffinity.leading,
+        activeColor: Color.fromRGBO(59, 210, 127, 1),
+        value: checkbox.selected, //checkbox.selected,
+        title: Text(checkbox.opcion),
+        onChanged: (value) {
+          print('selected: ${checkbox.selected}');
+          print('value: $value ');
+          setState(() {
+            checkbox.selected = value!;
+            print('selected a: ${checkbox.selected}');
+          });
+        },
+      );
 }
 
-class OpcionSelection extends StatefulWidget {
+class CheckBoxState {
   final String opcion;
+  bool selected = false;
 
-  const OpcionSelection({required this.opcion});
-  @override
-  _OpcionSelectionState createState() => _OpcionSelectionState();
-}
+  CheckBoxState({
+    required this.opcion,
+    // this.selected = false,
+  });
 
-class _OpcionSelectionState extends State<OpcionSelection> {
-  bool isSelected = false;
-
-  Color selected = Color.fromRGBO(59, 210, 127, 1);
-  Color noSelected = Color.fromRGBO(255, 255, 255, 1.0);
-
-  Color color = Color.fromRGBO(255, 255, 255, 1.0);
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          if (!isSelected) {
-            color = selected;
-            isSelected = !isSelected;
-          } else {
-            color = noSelected;
-            isSelected = !isSelected;
-          }
-        });
-      },
-      child: Container(
-        child: Row(
-          children: [
-            Container(
-              width: 20.0,
-              height: 20.0,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Color.fromRGBO(164, 164, 166, 1.0),
-                ),
-                color: color,
-                borderRadius: BorderRadius.all(Radius.circular(10.0)),
-              ),
-            ),
-            SizedBox(width: 30.0),
-            Text(
-              widget.opcion,
-              style: TextStyle(fontSize: 17.0),
-            )
-          ],
-        ),
-      ),
-    );
+  void setSelect() {
+    if (this.selected == true) {
+      this.selected = false;
+      return;
+    }
+    this.selected = true;
   }
 }
