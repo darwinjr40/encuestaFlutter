@@ -2,41 +2,24 @@ import 'dart:convert';
 
 class Opcion {
   Opcion({
-    required this.idOption,
+    required this.idResp,
     required this.nombre,
-    required this.selected,
   });
 
-  int idOption;
+  String idResp;
   String nombre;
-  bool selected;
 
   factory Opcion.fromJson(String str) => Opcion.fromMap(json.decode(str));
 
+  String toJson() => json.encode(toMap());
+
   factory Opcion.fromMap(Map<String, dynamic> json) => Opcion(
-        idOption: json["id_option"],
-        nombre: json["nombre"],
-        selected: false,
+        idResp: json["id_resp"],
+        nombre: json["nombre_resp"],
       );
 
-  factory Opcion.fromString(String nombre) =>
-      Opcion(idOption: 1, nombre: nombre, selected: false);
-
   Map<String, dynamic> toMap() => {
-        "id_option": idOption,
-        "nombre": nombre,
+        "id_resp": idResp,
+        "nombre_resp": nombre,
       };
-
-  bool isSelected() {
-    if (selected) return true;
-    return false;
-  }
-
-  void noSelected() {
-    this.selected = false;
-  }
-
-  void seleccionar() {
-    this.selected = true;
-  }
 }

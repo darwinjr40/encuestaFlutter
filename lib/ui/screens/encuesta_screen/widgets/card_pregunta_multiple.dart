@@ -19,7 +19,7 @@ class _CardPreguntaMultipleState extends State<CardPreguntaMultiple> {
       children: [
         nombre(widget.pregunta.nombreP),
         SizedBox(height: 7.0),
-        opciones(widget.pregunta.opDeResp),
+        opciones(widget.pregunta.opciones),
         Text(widget.pregunta.idPregunta),
       ],
     ));
@@ -42,17 +42,17 @@ class _CardPreguntaMultipleState extends State<CardPreguntaMultiple> {
     );
   }
 
-  Widget opciones(List<String> opciones) {
+  Widget opciones(List<Opcion> opciones) {
     return Column(
       children: getOpciones(opciones),
     );
   }
 
-  List<Widget> getOpciones(List<String> opciones) {
+  List<Widget> getOpciones(List<Opcion> opciones) {
     List<Widget> listaOpcionesButton = [];
 
     for (var i = 0; i < opciones.length; i++) {
-      listaOpcionesButton.add(new CheckBoxOption(opcion: opciones[i]));
+      listaOpcionesButton.add(new CheckBoxOption(opcion: opciones[i].nombre));
     }
     return listaOpcionesButton;
   }
