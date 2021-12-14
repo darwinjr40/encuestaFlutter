@@ -73,6 +73,7 @@ class OpcionButton extends StatefulWidget {
 
 class _OpcionButtonState extends State<OpcionButton> {
   bool isSelected = false;
+  int c = 0;
 
   Color selected = Color.fromRGBO(59, 210, 127, 1);
   Color noSelected = Color.fromRGBO(255, 255, 255, 1.0);
