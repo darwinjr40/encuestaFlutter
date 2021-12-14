@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:encuestas_system/domain/entities/models.dart';
 import 'package:encuestas_system/ui/screens/encuesta_screen/widgets/card_pregunta_abierta.dart';
 import 'package:encuestas_system/ui/screens/encuesta_screen/widgets/card_pregunta_cerrada.dart';
@@ -33,6 +35,35 @@ class _SeccionScreenState extends State<SeccionScreen> {
           greenLine(),
           Column(
             children: cargarPreguntas(widget.seccion.preguntas),
+          ),
+          Row(
+            children: [
+              (widget.index == 1)
+                  ? Container()
+                  : TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        'Anterior',
+                        style: TextStyle(
+                            color: Color.fromRGBO(59, 210, 127, 1.0),
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+              Expanded(child: SizedBox()),
+              (widget.index == widget.max)
+                  ? Container()
+                  : TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        'Siguiente',
+                        style: TextStyle(
+                            fontSize: 18.0,
+                            color: Color.fromRGBO(59, 210, 127, 1.0),
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+            ],
           )
         ],
       ),

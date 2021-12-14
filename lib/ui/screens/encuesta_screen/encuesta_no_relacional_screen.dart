@@ -1,5 +1,6 @@
 import 'package:encuestas_system/data/repositories/encuesta_repository.dart';
 import 'package:encuestas_system/domain/entities/models.dart';
+import 'package:encuestas_system/domain/services/aplicacion_encuesta_service.dart';
 import 'package:encuestas_system/ui/screens/encuesta_screen/widgets/seccion_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -14,14 +15,42 @@ class EncuestaNoRelacionalScreen extends StatefulWidget {
 class _EncuestaNoRelacionalScreenState
     extends State<EncuestaNoRelacionalScreen> {
   int index = 0;
+  int indexPageView = 0;
+  final PageController pageController = PageController(initialPage: 0);
   @override
   Widget build(BuildContext context) {
+    final aplicacionService =
+        Provider.of<AplicacionService>(context, listen: false);
     final Encuesta encuesta =
         ModalRoute.of(context)!.settings.arguments as Encuesta;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Encuesta screen'),
-        backgroundColor: Color.fromRGBO(59, 210, 127, 1.0),
+        automaticallyImplyLeading: false,
+        title: (aplicacionService.aplicacionMode)
+            ? Text('Aplicando encuesta')
+            : Text('Vista Encuesta'),
+        backgroundColor: (aplicacionService.aplicacionMode)
+            ? Color.fromRGBO(59, 210, 127, 1.0)
+            : Color.fromRGBO(0, 0, 0, 1.0),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                if (indexPageView > 0) indexPageView--;
+                print("indexPageView: $indexPageView");
+                pageController.animateToPage(indexPageView,
+                    duration: Duration(milliseconds: 250), curve: Curves.ease);
+              }),
+          // Text('secciones'),
+          IconButton(
+              icon: Icon(Icons.arrow_forward),
+              onPressed: () {
+                if (indexPageView + 1 < encuesta.cantSecciones) indexPageView++;
+                print("indexPageView: $indexPageView");
+                pageController.animateToPage(indexPageView,
+                    duration: Duration(milliseconds: 250), curve: Curves.ease);
+              })
+        ],
       ),
       body: listarSeccionesNoRelacionales(context, encuesta),
     );
@@ -46,6 +75,10 @@ class _EncuestaNoRelacionalScreenState
         return Container(
           padding: EdgeInsets.all(10.0),
           child: PageView(
+            onPageChanged: (index) {
+              indexPageView = index;
+            },
+            controller: pageController,
             children: _cargarSecciones(snapshot.data!, context),
           ),
         );
