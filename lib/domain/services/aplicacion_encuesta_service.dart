@@ -17,7 +17,6 @@ class AplicacionService with ChangeNotifier {
           opcions: [opActual],
           respuestaText: "");
       respuestas.add(respuestaActual);
-      print()
     } else if (pregunta.tipo == "multiple") {}
     // *buscar por el id de la pregunta y si es cerrada reemplazar el valor de la única opcion
     //print('id: ${pregunta.idPregunta}, valor: ${valor}');
