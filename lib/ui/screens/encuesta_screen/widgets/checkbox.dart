@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CheckBoxOption extends StatefulWidget {
-  const CheckBoxOption({Key? key, required this.opcion}) : super(key: key);
+  const CheckBoxOption({required this.opcion});
 
   @override
   _CheckBoxOptionState createState() => _CheckBoxOptionState();

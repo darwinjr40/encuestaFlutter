@@ -35,24 +35,6 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
       body: _paginaActual == 0
           ? listarEncuestasNoRelacional(context)
           : listarEncuestas(context),
-      /* bottomNavigationBar: BottomNavigationBar(
-        onTap: (index) {
-          setState(() {
-            _paginaActual = index;
-          });
-        },
-        currentIndex: _paginaActual,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            label: 'Relacional',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            label: 'No Relacional',
-          ),
-        ],
-      ), */
     );
   }
 
@@ -70,12 +52,6 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
                   Color.fromRGBO(59, 210, 127, 1)),
             ),
           );
-          /* Container(
-            padding: EdgeInsets.all(20.0),
-            child: ListTile(
-              title: Text('No hay encuestas'),
-            ),
-          ); */
         }
         print('si hay encuestas');
         return Container(
@@ -96,14 +72,13 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
       builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
         print(snapshot);
         if (!snapshot.hasData) {
-          return Container(
-            padding: EdgeInsets.all(20.0),
-            child: ListTile(
-              title: Text('No hay encuestas'),
+          return Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(
+                  Color.fromRGBO(59, 210, 127, 1)),
             ),
           );
         }
-        print('si hay encuestas');
         return Container(
           padding: EdgeInsets.all(10.0),
           child: ListView(
@@ -115,14 +90,11 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
   }
 
   List<Widget> _cargarEncuestas(List<dynamic>? data, BuildContext? context) {
-    // print(data);
     List<Widget> lista = [];
-    print('data');
     _encuestas = [];
     for (var encuesta in data!) {
       _encuestas.add(encuesta);
     }
-    print('_encuestas: $_encuestas');
     for (var encuesta in _encuestas) {
       lista.add(CardEncuesta(encuesta: encuesta));
       lista.add(SizedBox(
@@ -134,7 +106,6 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
 
   List<Widget> _cargarEncuestasNoRelacional(
       List<dynamic>? data, BuildContext? context) {
-    // print(data);
     List<Widget> lista = [];
     print('data');
     _encuestas = [];

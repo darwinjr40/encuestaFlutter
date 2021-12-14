@@ -1,4 +1,5 @@
 import 'package:encuestas_system/data/repositories/encuesta_repository.dart';
+import 'package:encuestas_system/domain/services/aplicacion_encuesta_service.dart';
 import 'package:encuestas_system/ui/screens/encuesta_screen/encuesta_no_relacional_screen.dart';
 import 'package:encuestas_system/ui/screens/screens.dart';
 import 'package:flutter/material.dart';
@@ -19,13 +20,14 @@ class _AppStateState extends State<AppState> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => EncuestaRepository()),
+        ChangeNotifierProvider(create: (_) => AplicacionService()),
       ],
       child: MyApp(),
     );
   }
 }
 
-class MyApp extends StatelessWidget{
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,7 +36,7 @@ class MyApp extends StatelessWidget{
       routes: {
         'lista_encuesta': (_) => ListaEncuestaScreen(),
         'encuesta': (_) => EncuestaScreen(),
-        'encuestaNoRelacional': (_) =>EncuestaNoRelacionalScreen()
+        'encuestaNoRelacional': (_) => EncuestaNoRelacionalScreen()
       },
       debugShowCheckedModeBanner: false,
     );

@@ -43,7 +43,6 @@ class _EncuestaNoRelacionalScreenState
             ),
           );
         }
-        print('si hay secciones');
         return Container(
           padding: EdgeInsets.all(10.0),
           child: PageView(
@@ -59,8 +58,6 @@ class _EncuestaNoRelacionalScreenState
     int index = 1;
     Encuesta encuesta = data;
     print(encuesta);
-    //print('cargar secciones: $data');
-    //print('cantidad de secciones: ${encuesta.secciones!.length}');
     for (var seccion in encuesta.secciones!) {
       listaSeccionesPage.add(SeccionScreen(
         index: index,
@@ -68,10 +65,7 @@ class _EncuestaNoRelacionalScreenState
         max: encuesta.cantSecciones,
       ));
       index++;
-      print('seccion: $seccion');
     }
-    print('data: $data');
-    print('listaSeccionesPage: $listaSeccionesPage');
     return listaSeccionesPage;
   }
 }

@@ -1,6 +1,8 @@
 import 'package:encuestas_system/domain/entities/models.dart';
+import 'package:encuestas_system/domain/services/aplicacion_encuesta_service.dart';
 import 'package:encuestas_system/ui/widgets/card_container.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CardEncuestaNoRelacional extends StatelessWidget {
   final Encuesta encuesta;
@@ -16,7 +18,15 @@ class CardEncuestaNoRelacional extends StatelessWidget {
           greenLine(),
           descripcion(encuesta.descripcion),
           seccionesText(encuesta.cantSecciones),
-          verEncuestaButton(context),
+          Row(
+            children: [
+              Expanded(child: verEncuestaButton(context)),
+              SizedBox(
+                width: 5.0,
+              ),
+              Expanded(child: aplicarEncuestaButton(context)),
+            ],
+          )
         ],
         /* padding:
             EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0, bottom: 20.0),
@@ -96,28 +106,58 @@ class CardEncuestaNoRelacional extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
       child: ElevatedButton(
-        style: ButtonStyle(
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18.0),
-            ),
+        style: ElevatedButton.styleFrom(
+          elevation: 0.0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18.0),
           ),
-          backgroundColor: MaterialStateProperty.all(
-            Color.fromRGBO(61, 61, 61, 1.0),
+          primary: Color.fromRGBO(61, 61, 61, 1.0),
+        ),
+        onPressed: () {
+          Navigator.pushNamed(context, 'encuestaNoRelacional',
+              arguments: encuesta);
+          final aplicacionService =
+              Provider.of<AplicacionService>(context, listen: false);
+          aplicacionService.aplicacionMode = false;
+        },
+        child: Center(
+          child: Text(
+            'Ver Encuesta',
+            style: TextStyle(fontSize: 15.0),
           ),
         ),
+      ),
+    );
+  }
 
-        /* style: ElevatedButton.styleFrom(
-          primary: Color.fromRGBO(61, 61, 61, 1.0),
-        ), */
+  Widget aplicarEncuestaButton(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          elevation: 0.0,
+          side:
+              BorderSide(width: 1.2, color: Color.fromRGBO(59, 210, 127, 1.0)),
+          primary: Colors.white,
+          // primary: Color.fromRGBO(61, 61, 61, 1.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18.0),
+          ),
+        ),
         onPressed: () {
+          final aplicacionService =
+              Provider.of<AplicacionService>(context, listen: false);
+          aplicacionService.aplicacionMode = true;
           Navigator.pushNamed(context, 'encuestaNoRelacional',
               arguments: encuesta);
         },
         child: Center(
           child: Text(
             'Aplicar Encuesta',
-            style: TextStyle(fontSize: 15.0),
+            style: TextStyle(
+              fontSize: 15.0,
+              color: Color.fromRGBO(61, 61, 61, 1.0),
+            ),
           ),
         ),
       ),

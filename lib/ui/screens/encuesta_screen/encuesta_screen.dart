@@ -22,9 +22,6 @@ class _EncuestaScreenState extends State<EncuestaScreen> {
         backgroundColor: Color.fromRGBO(59, 210, 127, 1.0),
       ),
       body: listarSecciones(context, encuesta),
-      /* body: PageView(
-        children: listarSecciones(context),
-      ), */
     );
   }
 
@@ -42,25 +39,12 @@ class _EncuestaScreenState extends State<EncuestaScreen> {
                   Color.fromRGBO(59, 210, 127, 1)),
             ),
           );
-          /* Container(
-            padding: EdgeInsets.all(20.0),
-            child: ListTile(
-              title: Text('No hay secciones'),
-            ),
-          ); */
         }
         print('si hay secciones');
         return Container(
-          // color: Colors.red,
           padding: EdgeInsets.all(10.0),
           child: PageView(
-            children: _cargarSecciones(snapshot.data!,
-                context) /* [
-              Container(color: Colors.green),
-              Container(color: Colors.purple),
-              Container(color: Colors.black),
-            ] */
-            ,
+            children: _cargarSecciones(snapshot.data!, context),
           ),
         );
       },
@@ -85,16 +69,9 @@ class _EncuestaScreenState extends State<EncuestaScreen> {
         }
         print('si hay secciones');
         return Container(
-          // color: Colors.red,
           padding: EdgeInsets.all(10.0),
           child: PageView(
-            children: _cargarSecciones(snapshot.data!,
-                context) /* [
-              Container(color: Colors.green),
-              Container(color: Colors.purple),
-              Container(color: Colors.black),
-            ] */
-            ,
+            children: _cargarSecciones(snapshot.data!, context),
           ),
         );
       },
@@ -105,8 +82,6 @@ class _EncuestaScreenState extends State<EncuestaScreen> {
     List<Widget> listaSeccionesPage = [];
     int index = 1;
     Encuesta encuesta = data;
-    print('cargar secciones: $data');
-    print('cantidad de secciones: ${encuesta.secciones!.length}');
     for (var seccion in encuesta.secciones!) {
       listaSeccionesPage.add(SeccionScreen(
         seccion: seccion,
@@ -114,10 +89,7 @@ class _EncuestaScreenState extends State<EncuestaScreen> {
         max: encuesta.cantSecciones,
       ));
       index++;
-      print('seccion: $seccion');
     }
-    print('data: $data');
-    print('listaSeccionesPage: $listaSeccionesPage');
     return listaSeccionesPage;
   }
 }

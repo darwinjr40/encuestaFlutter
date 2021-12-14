@@ -1,6 +1,8 @@
 import 'package:encuestas_system/domain/entities/models.dart';
+import 'package:encuestas_system/domain/services/aplicacion_encuesta_service.dart';
 import 'package:encuestas_system/ui/widgets/card_container.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CardPreguntaCerrada extends StatefulWidget {
   final Pregunta pregunta;
@@ -14,6 +16,7 @@ class CardPreguntaCerrada extends StatefulWidget {
 class _CardPreguntaCerradaState extends State<CardPreguntaCerrada> {
   String opcionSeleccionada = '';
   String selected = 'no response';
+
   @override
   Widget build(BuildContext context) {
     return CardContainer(
@@ -59,6 +62,9 @@ class _CardPreguntaCerradaState extends State<CardPreguntaCerrada> {
           value: opciones[i].nombre,
           groupValue: selected,
           onChanged: (value) {
+            final aplicacionService =
+                Provider.of<AplicacionService>(context, listen: false);
+            if (aplicacionService.aplicacionMode != true) return;
             setState(() {
               //selectedRadio = value as int;
               selected = value as String;
