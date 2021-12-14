@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:encuestas_system/domain/entities/models.dart';
 import 'package:encuestas_system/ui/screens/encuesta_screen/widgets/card_pregunta_abierta.dart';
 import 'package:encuestas_system/ui/screens/encuesta_screen/widgets/card_pregunta_cerrada.dart';
@@ -6,8 +8,11 @@ import 'package:flutter/material.dart';
 
 class SeccionScreen extends StatefulWidget {
   final Seccion seccion;
+  final int index;
+  final int max;
 
-  const SeccionScreen({required this.seccion});
+  const SeccionScreen(
+      {required this.seccion, required this.index, required this.max});
   @override
   _SeccionScreenState createState() => _SeccionScreenState();
 }
@@ -20,9 +25,45 @@ class _SeccionScreenState extends State<SeccionScreen> {
       padding: EdgeInsets.all(10.0),
       child: ListView(
         children: [
-          nombreSeccion(widget.seccion.nombreS),
+          Row(
+            children: [
+              nombreSeccion(widget.seccion.nombreS),
+              Expanded(child: SizedBox()),
+              seccionIndex(),
+            ],
+          ),
+          greenLine(),
           Column(
             children: cargarPreguntas(widget.seccion.preguntas),
+          ),
+          Row(
+            children: [
+              (widget.index == 1)
+                  ? Container()
+                  : TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        'Anterior',
+                        style: TextStyle(
+                            color: Color.fromRGBO(59, 210, 127, 1.0),
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+              Expanded(child: SizedBox()),
+              (widget.index == widget.max)
+                  ? Container()
+                  : TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        'Siguiente',
+                        style: TextStyle(
+                            fontSize: 18.0,
+                            color: Color.fromRGBO(59, 210, 127, 1.0),
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+            ],
           )
         ],
       ),
@@ -31,9 +72,12 @@ class _SeccionScreenState extends State<SeccionScreen> {
 
   Widget nombreSeccion(String nombreSeccion) {
     return Padding(
-      padding: EdgeInsets.all(10.0),
+      padding: EdgeInsets.only(bottom: 2.0),
       child: Container(
-        child: Text(nombreSeccion),
+        child: Text(
+          nombreSeccion,
+          style: TextStyle(fontSize: 18.0),
+        ),
       ),
     );
   }
@@ -52,5 +96,24 @@ class _SeccionScreenState extends State<SeccionScreen> {
     }
 
     return preguntasCard;
+  }
+
+  Widget seccionIndex() {
+    return Container(
+      child: Text('sección ${widget.index} de ${widget.max}'),
+    );
+  }
+
+  Widget greenLine() {
+    return Padding(
+      padding: EdgeInsets.only(top: 5.0, bottom: 15.0),
+      child: Container(
+        height: 2.0,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          color: Color.fromRGBO(59, 210, 127, 1.0),
+        ),
+      ),
+    );
   }
 }

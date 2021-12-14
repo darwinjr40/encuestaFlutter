@@ -115,7 +115,7 @@ class CardEncuesta extends StatelessWidget {
         },
         child: Center(
           child: Text(
-            'Ver Encuesta',
+            'Aplicar Encuesta',
             style: TextStyle(fontSize: 15.0),
           ),
         ),

@@ -6,15 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ListaEncuestaScreen extends StatefulWidget {
-  //todo: instanciar el provider de la lista de encuestas
-
   @override
   _ListaEncuestaScreenState createState() => _ListaEncuestaScreenState();
 }
 
 class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
   int _paginaActual = 0;
-  List<Widget> _paginas = [];
+  //List<Widget> _paginas = [];
   List<Encuesta> _encuestas = [];
   List<CardEncuesta> _listaCardEncuestas = [];
 
@@ -34,25 +32,9 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
           )
         ],
       ),
-      body: _paginaActual == 0? listarEncuestas(context) : listarEncuestasNoRelacional(context),
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: (index) {
-          setState(() {
-            _paginaActual = index;
-          });
-        },
-        currentIndex: _paginaActual,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            label: 'Relacional',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            label: 'No Relacional',
-          ),
-        ],
-      ),
+      body: _paginaActual == 0
+          ? listarEncuestasNoRelacional(context)
+          : listarEncuestas(context),
     );
   }
 
@@ -70,12 +52,6 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
                   Color.fromRGBO(59, 210, 127, 1)),
             ),
           );
-          /* Container(
-            padding: EdgeInsets.all(20.0),
-            child: ListTile(
-              title: Text('No hay encuestas'),
-            ),
-          ); */
         }
         print('si hay encuestas');
         return Container(
@@ -88,7 +64,7 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
     );
   }
 
-   Widget listarEncuestasNoRelacional(BuildContext context) {
+  Widget listarEncuestasNoRelacional(BuildContext context) {
     final encuestaService =
         Provider.of<EncuestaRepository>(context, listen: false);
     return FutureBuilder(
@@ -96,14 +72,13 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
       builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
         print(snapshot);
         if (!snapshot.hasData) {
-          return Container(
-            padding: EdgeInsets.all(20.0),
-            child: ListTile(
-              title: Text('No hay encuestas'),
+          return Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(
+                  Color.fromRGBO(59, 210, 127, 1)),
             ),
           );
         }
-        print('si hay encuestas');
         return Container(
           padding: EdgeInsets.all(10.0),
           child: ListView(
@@ -115,14 +90,11 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
   }
 
   List<Widget> _cargarEncuestas(List<dynamic>? data, BuildContext? context) {
-    // print(data);
     List<Widget> lista = [];
-    print('data');
     _encuestas = [];
     for (var encuesta in data!) {
       _encuestas.add(encuesta);
     }
-    print('_encuestas: $_encuestas');
     for (var encuesta in _encuestas) {
       lista.add(CardEncuesta(encuesta: encuesta));
       lista.add(SizedBox(
@@ -132,8 +104,8 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
     return lista;
   }
 
-  List<Widget> _cargarEncuestasNoRelacional(List<dynamic>? data, BuildContext? context) {
-    // print(data);
+  List<Widget> _cargarEncuestasNoRelacional(
+      List<dynamic>? data, BuildContext? context) {
     List<Widget> lista = [];
     print('data');
     _encuestas = [];
@@ -149,6 +121,7 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
     }
     return lista;
   }
+
   Future<void> _recargarLista() async {
     _listaCardEncuestas = [];
     setState(() {});

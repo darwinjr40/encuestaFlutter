@@ -30,8 +30,7 @@ class EncuestaRepository extends ChangeNotifier
     print('json response: $jsonResponse');
 
     encuesta = Encuesta.fromMap(jsonResponse);
-    print(
-        'cantidad de secciones en la respuesta json: ${encuesta.secciones!.length}');
+    print(jsonResponse);
     return encuesta;
   }
 
