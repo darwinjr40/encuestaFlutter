@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:encuestas_system/domain/entities/Respuesta.dart';
 import 'package:encuestas_system/domain/entities/models.dart';
 import 'package:flutter/material.dart';
@@ -15,11 +17,27 @@ class AplicacionService with ChangeNotifier {
           opcions: [opActual],
           respuestaText: "");
       respuestas.add(respuestaActual);
-      imprimirRespuestas();
-    }
+      print()
+    } else if (pregunta.tipo == "multiple") {}
     // *buscar por el id de la pregunta y si es cerrada reemplazar el valor de la única opcion
     //print('id: ${pregunta.idPregunta}, valor: ${valor}');
     notifyListeners();
+  }
+
+  bool existeRespuestaSimple(Pregunta pregunta, String valor) {
+    bool b = false;
+    if (respuestas.isNotEmpty) {
+      for (var resp in respuestas) {
+        if (resp.idPregunta == pregunta.idPregunta) {
+          print('existe, hay que aliminar');
+          b = true;
+        } else {
+          print('añadiendo');
+          b = false;
+        }
+      }
+    }
+    return b;
   }
 
   void imprimirRespuestas() {

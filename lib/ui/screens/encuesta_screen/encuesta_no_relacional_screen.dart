@@ -40,8 +40,7 @@ class _EncuestaNoRelacionalScreenState
                 print("indexPageView: $indexPageView");
                 pageController.animateToPage(indexPageView,
                     duration: Duration(milliseconds: 250), curve: Curves.ease);
-              }),
-          // Text('secciones'),
+              }), // Text('secciones'),
           IconButton(
               icon: Icon(Icons.arrow_forward),
               onPressed: () {
