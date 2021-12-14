@@ -9,9 +9,10 @@ class Respuesta {
     required this.respuestaText,
   });
 
-  int idPregunta;
+  String idPregunta;
   String nombrePregunta;
-  List<Opcion> opcions;
+  List<Opcion>
+      opcions; //* si es cerrada, esa lista solo tiene 1 elemento, si es múltiple tendrá 1 o mas
   String respuestaText;
 
   factory Respuesta.fromJson(String str) => Respuesta.fromMap(json.decode(str));

@@ -20,6 +20,8 @@ class _CheckBoxOptionState extends State<CheckBoxOption> {
       onChanged: (value) {
         setState(() {
           this.selected = value!;
+          print(selected);
+          print(widget.opcion);
         });
       },
     );

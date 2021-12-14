@@ -69,6 +69,7 @@ class _CardPreguntaCerradaState extends State<CardPreguntaCerrada> {
               //selectedRadio = value as int;
               selected = value as String;
               print(selected);
+              aplicacionService.add(widget.pregunta, selected);
             });
           },
           activeColor: Color.fromRGBO(59, 210, 127, 1),
