@@ -1,9 +1,11 @@
 import 'package:encuestas_system/data/repositories/encuesta_repository.dart';
 import 'package:encuestas_system/domain/entities/models.dart';
+import 'package:encuestas_system/domain/services/db.dart';
 import 'package:encuestas_system/ui/screens/lista_encuesta/widgets/card_encuesta.dart';
 import 'package:encuestas_system/ui/screens/lista_encuesta/widgets/card_encuesta_no_relacional.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sqflite/sqflite.dart';
 
 class ListaEncuestaScreen extends StatefulWidget {
   @override
@@ -91,6 +93,7 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
 
   List<Widget> _cargarEncuestas(List<dynamic>? data, BuildContext? context) {
     List<Widget> lista = [];
+
     _encuestas = [];
     for (var encuesta in data!) {
       _encuestas.add(encuesta);
@@ -107,6 +110,7 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
   List<Widget> _cargarEncuestasNoRelacional(
       List<dynamic>? data, BuildContext? context) {
     List<Widget> lista = [];
+
     print('data');
     _encuestas = [];
     for (var encuesta in data!) {
@@ -118,6 +122,7 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
       lista.add(SizedBox(
         height: 20,
       ));
+      //DB.insertEncuesta(encuesta, contenido);
     }
     return lista;
   }

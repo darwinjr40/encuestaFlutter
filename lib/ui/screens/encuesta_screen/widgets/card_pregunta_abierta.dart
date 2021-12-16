@@ -1,6 +1,8 @@
 import 'package:encuestas_system/domain/entities/models.dart';
+import 'package:encuestas_system/domain/services/aplicacion_encuesta_service.dart';
 import 'package:encuestas_system/ui/widgets/card_container.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CardPreguntaAbierta extends StatefulWidget {
   final Pregunta pregunta;
@@ -13,6 +15,7 @@ class CardPreguntaAbierta extends StatefulWidget {
 }
 
 class _CardPreguntaAbiertaState extends State<CardPreguntaAbierta> {
+  String respuesta = '';
   @override
   Widget build(BuildContext context) {
     return CardContainer(
@@ -21,6 +24,7 @@ class _CardPreguntaAbiertaState extends State<CardPreguntaAbierta> {
           nombre(widget.pregunta.nombreP),
           SizedBox(height: 15.0),
           campoRespuesta(),
+          saveButton(),
         ],
       ),
     );
@@ -54,8 +58,23 @@ class _CardPreguntaAbiertaState extends State<CardPreguntaAbierta> {
         borderRadius: BorderRadius.all(Radius.circular(10.0)),
       ),
       child: TextField(
+        onChanged: (value) {
+          if (value.isNotEmpty) {
+            respuesta = value;
+          }
+        },
         maxLines: 4,
         cursorColor: Color.fromRGBO(44, 44, 44, 1.0),
+      ),
+    );
+  }
+
+  Widget saveButton() {
+    return Container(
+      padding: EdgeInsets.all(0.0),
+      child: TextButton(
+        onPressed: () {},
+        child: Text('guardar respuesta'),
       ),
     );
   }

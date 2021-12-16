@@ -1,10 +1,12 @@
 import 'dart:ui';
-
 import 'package:encuestas_system/domain/entities/models.dart';
+import 'package:encuestas_system/domain/services/aplicacion_encuesta_service.dart';
 import 'package:encuestas_system/ui/screens/encuesta_screen/widgets/card_pregunta_abierta.dart';
 import 'package:encuestas_system/ui/screens/encuesta_screen/widgets/card_pregunta_cerrada.dart';
 import 'package:encuestas_system/ui/screens/encuesta_screen/widgets/card_pregunta_multiple.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SeccionScreen extends StatefulWidget {
   final Seccion seccion;
@@ -38,31 +40,57 @@ class _SeccionScreenState extends State<SeccionScreen> {
           ),
           Row(
             children: [
-              (widget.index == 1)
-                  ? Container()
-                  : TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        'Anterior',
-                        style: TextStyle(
-                            color: Color.fromRGBO(59, 210, 127, 1.0),
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
               Expanded(child: SizedBox()),
               (widget.index == widget.max)
-                  ? Container()
-                  : TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        'Siguiente',
-                        style: TextStyle(
-                            fontSize: 18.0,
-                            color: Color.fromRGBO(59, 210, 127, 1.0),
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
+                  ? ElevatedButton(
+                      onPressed: () {
+                        final aplicacionService =
+                            Provider.of<AplicacionService>(context,
+                                listen: false);
+                        if (aplicacionService.respuestas.length <
+                            aplicacionService.preguntasTotales) {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Text('Advertencia'),
+                              content: Text('Hay preguntas sin responder'),
+                              actions: [
+                                ElevatedButton(
+                                    child: Text('Aceptar'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    })
+                              ],
+                            ),
+                          );
+                        } else {
+                          //aplicacionService.aplicacion.idEncuesta =
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Text('Encuesta completa'),
+                              content: Text(
+                                  'Encuesta lista para enviar al servidor'),
+                              actions: [
+                                ElevatedButton(
+                                    child: Text('Aceptar'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    })
+                              ],
+                            ),
+                          );
+                        }
+                      },
+                      child: Text('Finalizar Encuesta'),
+                      style: ElevatedButton.styleFrom(
+                          primary: Color.fromRGBO(59, 210, 127, 1.0),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          textStyle: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold)),
+                    )
+                  : Container(),
             ],
           )
         ],
