@@ -82,7 +82,7 @@ class _EncuestaScreenState extends State<EncuestaScreen> {
     List<Widget> listaSeccionesPage = [];
     int index = 1;
     Encuesta encuesta = data;
-    for (var seccion in encuesta.secciones!) {
+    for (var seccion in encuesta.secciones) {
       listaSeccionesPage.add(SeccionScreen(
         seccion: seccion,
         index: index,

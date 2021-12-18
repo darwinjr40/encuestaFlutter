@@ -5,6 +5,7 @@ import 'package:encuestas_system/ui/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'domain/services/internet_connection_check.service.dart';
 import 'ui/screens/encuesta_screen/encuesta_screen.dart';
 
 void main() => runApp(AppState());
@@ -21,6 +22,7 @@ class _AppStateState extends State<AppState> {
       providers: [
         ChangeNotifierProvider(create: (_) => EncuestaRepository()),
         ChangeNotifierProvider(create: (_) => AplicacionService()),
+        ChangeNotifierProvider(create: (_) => ConnectionStatusModel()),
       ],
       child: MyApp(),
     );

@@ -32,6 +32,5 @@ class Pregunta {
         "nombre_p": nombreP,
         "tipo": tipo,
         "op_de_resp": List<dynamic>.from(opciones.map((x) => x)),
-        //"opciones": List<dynamic>.from(opciones.map((x) => x.toMap())),
       };
 }

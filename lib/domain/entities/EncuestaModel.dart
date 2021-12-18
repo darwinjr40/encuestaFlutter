@@ -7,7 +7,7 @@ class Encuesta {
     required this.idEncuesta,
     required this.nombreE,
     required this.descripcion,
-    this.secciones,
+    required this.secciones,
     required this.cantSecciones,
     required this.estado,
   });
@@ -15,7 +15,7 @@ class Encuesta {
   String idEncuesta;
   String nombreE;
   String descripcion;
-  List<Seccion>? secciones;
+  List<Seccion> secciones;
   int cantSecciones;
   bool estado;
 
@@ -37,7 +37,7 @@ class Encuesta {
   Map<String, dynamic> toMap() => {
         "id_encuesta": idEncuesta.toString(),
         "nombre_e": nombreE,
-        "seccion": List<dynamic>.from(secciones!.map((x) => x.toMap())),
+        "seccion": List<dynamic>.from(secciones.map((x) => x.toMap())),
         "cant_secciones": cantSecciones,
       };
 }

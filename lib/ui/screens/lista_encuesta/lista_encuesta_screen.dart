@@ -1,6 +1,7 @@
 import 'package:encuestas_system/data/repositories/encuesta_repository.dart';
 import 'package:encuestas_system/domain/entities/models.dart';
-import 'package:encuestas_system/domain/services/db.dart';
+import 'package:encuestas_system/domain/entities/sqlite/EncuestaSqlite.dart';
+import 'package:encuestas_system/domain/services/encuestasDB.dart';
 import 'package:encuestas_system/ui/screens/lista_encuesta/widgets/card_encuesta.dart';
 import 'package:encuestas_system/ui/screens/lista_encuesta/widgets/card_encuesta_no_relacional.dart';
 import 'package:flutter/material.dart';
@@ -29,9 +30,24 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
         ),
         actions: [
           IconButton(
+            icon: Icon(Icons.remove_red_eye_outlined),
+            onPressed: () async {
+              print('encuestas en la bd:');
+              List<EncuestaSqlite> encuestasEnLaBD =
+                  await EncuestaDB.getEncuestas();
+              if (encuestasEnLaBD.length < 1) return;
+              print(
+                  'cantidad de registros en la tabla encuestas: ${encuestasEnLaBD.length}');
+              encuestasEnLaBD.forEach((element) {
+                print(element.toString());
+                print('***********************');
+              });
+            },
+          ),
+          IconButton(
             icon: Icon(Icons.replay_outlined),
             onPressed: _recargarLista,
-          )
+          ),
         ],
       ),
       body: _paginaActual == 0
@@ -104,6 +120,7 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
         height: 20,
       ));
     }
+
     return lista;
   }
 
@@ -122,13 +139,27 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
       lista.add(SizedBox(
         height: 20,
       ));
-      //DB.insertEncuesta(encuesta, contenido);
     }
+
+    //EncuestaDB.deleteEncuestas();
+    //EncuestaDB.createTableEncuestas();
+
     return lista;
+  }
+
+  Future<void> descargarEncuesta(
+      Encuesta encuesta, BuildContext context) async {
+    final encuestaService =
+        Provider.of<EncuestaRepository>(context, listen: false);
+    Encuesta e =
+        await encuestaService.getEncuestaNoRelacional(encuesta.idEncuesta);
+    EncuestaDB.insertEncuesta(e);
   }
 
   Future<void> _recargarLista() async {
     _listaCardEncuestas = [];
     setState(() {});
+
+    //List<Map> result = await db.rawQuery('SELECT * FROM encueestas');
   }
 }

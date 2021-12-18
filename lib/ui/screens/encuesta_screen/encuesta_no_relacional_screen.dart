@@ -26,6 +26,7 @@ class _EncuestaNoRelacionalScreenState
         ModalRoute.of(context)!.settings.arguments as Encuesta;
     return WillPopScope(
       onWillPop: () async {
+        if (!aplicacionService.aplicacionMode) return true;
         final shouldPop = await _onWillPopScope(context);
         return shouldPop ?? false;
       },
@@ -102,7 +103,7 @@ class _EncuestaNoRelacionalScreenState
     int index = 1;
     Encuesta encuesta = data;
     int cantidadPreguntas = 0;
-    for (var seccion in encuesta.secciones!) {
+    for (var seccion in encuesta.secciones) {
       listaSeccionesPage.add(SeccionScreen(
         index: index,
         seccion: seccion,
