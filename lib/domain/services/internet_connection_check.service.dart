@@ -11,13 +11,13 @@ class ConnectionStatusModel extends ChangeNotifier {
 
   ConnectionStatusModel() {
     _connectionSubscription = _connectivity.onConnectivityChanged
-        .listen((_) => _checkInternetConnection());
-    _checkInternetConnection();
+        .listen((_) => checkInternetConnection());
+    checkInternetConnection();
   }
 
   bool get isOnline => _isOnline;
 
-  Future<void> _checkInternetConnection() async {
+  Future<bool> checkInternetConnection() async {
     try {
       // Sometimes the callback is called when we reconnect to wifi, but the internet is not really functional
       // This delay try to wait until we are really connected to internet
@@ -31,7 +31,11 @@ class ConnectionStatusModel extends ChangeNotifier {
     } on SocketException catch (_) {
       _isOnline = false;
     }
+    //print('se ejecutó el check');
+    //print(this._isOnline);
+
     notifyListeners();
+    return _isOnline;
   }
 
   @override

@@ -2,6 +2,8 @@ import 'package:encuestas_system/data/repositories/encuesta_repository.dart';
 import 'package:encuestas_system/domain/entities/Encuestador.dart';
 import 'package:encuestas_system/domain/entities/models.dart';
 import 'package:encuestas_system/domain/services/aplicacion_encuesta_service.dart';
+import 'package:encuestas_system/domain/services/encuestasDB.dart';
+import 'package:encuestas_system/domain/services/internet_connection_check.service.dart';
 import 'package:encuestas_system/ui/screens/encuesta_screen/widgets/seccion_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -70,8 +72,12 @@ class _EncuestaNoRelacionalScreenState
       BuildContext context, Encuesta encuesta) {
     final encuestaService =
         Provider.of<EncuestaRepository>(context, listen: false);
+    final conectionService =
+        Provider.of<ConnectionStatusModel>(context, listen: false);
     return FutureBuilder(
-      future: encuestaService.getEncuestaNoRelacional(encuesta.idEncuesta),
+      future: (conectionService.isOnline)
+          ? encuestaService.getEncuestaNoRelacional(encuesta.idEncuesta)
+          : EncuestaDB.getEncuestaById(encuesta.idEncuesta),
       builder: (context, AsyncSnapshot<Encuesta> snapshot) {
         print(snapshot);
         if (!snapshot.hasData) {

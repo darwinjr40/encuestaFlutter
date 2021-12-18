@@ -95,4 +95,11 @@ class EncuestaDB {
     if (list.length > 0) return true;
     return false;
   }
+
+  static Future<Encuesta> getEncuestaById(String id) async {
+    Database database = await _openDB();
+    List<Map<String, dynamic>> list = await database
+        .rawQuery('SELECT * FROM encuestas where id_encuesta = "$id"');
+    return Encuesta.fromJson(list[0]['content']);
+  }
 }

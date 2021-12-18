@@ -2,6 +2,7 @@ import 'package:encuestas_system/data/repositories/encuesta_repository.dart';
 import 'package:encuestas_system/domain/entities/models.dart';
 import 'package:encuestas_system/domain/services/aplicacion_encuesta_service.dart';
 import 'package:encuestas_system/domain/services/encuestasDB.dart';
+import 'package:encuestas_system/domain/services/internet_connection_check.service.dart';
 import 'package:encuestas_system/ui/widgets/card_container.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -41,12 +42,6 @@ class _CardEncuestaNoRelacionalState extends State<CardEncuestaNoRelacional> {
             ],
           )
         ],
-        /* padding:
-            EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0, bottom: 20.0),
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.blueAccent),
-          color: Colors.red,
-        ), */
       ),
     );
   }
@@ -213,7 +208,6 @@ class _CardEncuestaNoRelacionalState extends State<CardEncuestaNoRelacional> {
                           child: Text('Eliminar'),
                           onPressed: () async {
                             //Navigator.of(context).pop();
-                            //todo método para eliminar una encuesta de la bd :'v
                             await EncuestaDB.delete(widget.encuesta);
                             setState(() {});
                           })
@@ -226,18 +220,24 @@ class _CardEncuestaNoRelacionalState extends State<CardEncuestaNoRelacional> {
             ),
           );
         } else {
-          return Container(
-            child: IconButton(
-              icon: Icon(
-                Icons.file_download,
-                color: Color.fromRGBO(59, 210, 127, 1.0),
-              ),
-              onPressed: () async {
-                await descargarEncuesta(widget.encuesta, context);
-                setState(() {});
-                //EncuestaDB.descargarEncuesta(widget.encuesta);
-              },
-            ),
+          return Consumer<ConnectionStatusModel>(
+            builder: (context, conection, _) {
+              return (conection.isOnline)
+                  ? Container(
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.file_download,
+                          color: Color.fromRGBO(59, 210, 127, 1.0),
+                        ),
+                        onPressed: () async {
+                          await descargarEncuesta(widget.encuesta, context);
+                          setState(() {});
+                          //EncuestaDB.descargarEncuesta(widget.encuesta);
+                        },
+                      ),
+                    )
+                  : Container();
+            },
           );
         }
       },

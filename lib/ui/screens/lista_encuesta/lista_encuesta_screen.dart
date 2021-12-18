@@ -1,7 +1,9 @@
+import 'dart:convert' as convert;
 import 'package:encuestas_system/data/repositories/encuesta_repository.dart';
 import 'package:encuestas_system/domain/entities/models.dart';
 import 'package:encuestas_system/domain/entities/sqlite/EncuestaSqlite.dart';
 import 'package:encuestas_system/domain/services/encuestasDB.dart';
+import 'package:encuestas_system/domain/services/internet_connection_check.service.dart';
 import 'package:encuestas_system/ui/screens/lista_encuesta/widgets/card_encuesta.dart';
 import 'package:encuestas_system/ui/screens/lista_encuesta/widgets/card_encuesta_no_relacional.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +23,8 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final conectionService =
+        Provider.of<ConnectionStatusModel>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(59, 210, 127, 1.0),
@@ -50,9 +54,7 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
           ),
         ],
       ),
-      body: _paginaActual == 0
-          ? listarEncuestasNoRelacional(context)
-          : listarEncuestas(context),
+      body: listarEncuestasNoRelacional(context),
     );
   }
 
@@ -85,26 +87,68 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
   Widget listarEncuestasNoRelacional(BuildContext context) {
     final encuestaService =
         Provider.of<EncuestaRepository>(context, listen: false);
-    return FutureBuilder(
-      future: encuestaService.getListNoRelacional(),
-      builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
-        print(snapshot);
-        if (!snapshot.hasData) {
-          return Center(
-            child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(
-                  Color.fromRGBO(59, 210, 127, 1)),
-            ),
-          );
-        }
-        return Container(
-          padding: EdgeInsets.all(10.0),
-          child: ListView(
-            children: _cargarEncuestasNoRelacional(snapshot.data, context),
-          ),
-        );
-      },
-    );
+    return Consumer<ConnectionStatusModel>(builder: (context, conection, _) {
+      return (conection.isOnline)
+          ? FutureBuilder(
+              future: encuestaService.getListNoRelacional(),
+              builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+                if (!snapshot.hasData) {
+                  return Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                          Color.fromRGBO(59, 210, 127, 1)),
+                    ),
+                  );
+                }
+                return Container(
+                  padding: EdgeInsets.all(10.0),
+                  child: ListView(
+                    children:
+                        _cargarEncuestasNoRelacional(snapshot.data, context),
+                  ),
+                );
+              },
+            )
+          : FutureBuilder(
+              future: EncuestaDB.getEncuestas(),
+              builder: (context, AsyncSnapshot<List<EncuestaSqlite>> snapshot) {
+                if (!snapshot.hasData) {
+                  return Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        Color.fromRGBO(59, 210, 127, 1),
+                      ),
+                    ),
+                  );
+                }
+                //print('lista de la base de datos snapshot: ${snapshot.data}');
+                List<Encuesta> listaBD = [];
+                for (var e in snapshot.data!) {
+                  var response = e.content;
+                  //print(response);
+                  var jsonResponse = convert.jsonDecode(response!);
+                  print('json response: $jsonResponse');
+                  Encuesta enc = Encuesta.fromMap(jsonResponse);
+                  listaBD.add(enc);
+                }
+                print('listaDB: $listaBD');
+                return Container(
+                  padding: EdgeInsets.all(10.0),
+                  child: ListView(
+                    children: _cargarEncuestasNoRelacionalBD(listaBD),
+                  ),
+                );
+              },
+            );
+      /* Container(
+              padding: EdgeInsets.all(10.0),
+              child: ListView(
+                children: [
+                  _cargarEncuestasDB(context),
+                ],
+              ),
+            ); */
+    });
   }
 
   List<Widget> _cargarEncuestas(List<dynamic>? data, BuildContext? context) {
@@ -128,7 +172,7 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
       List<dynamic>? data, BuildContext? context) {
     List<Widget> lista = [];
 
-    print('data');
+    //print('data');
     _encuestas = [];
     for (var encuesta in data!) {
       _encuestas.add(encuesta);
@@ -140,10 +184,56 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
         height: 20,
       ));
     }
-
     //EncuestaDB.deleteEncuestas();
     //EncuestaDB.createTableEncuestas();
+    return lista;
+  }
 
+  Widget _cargarEncuestasDB(BuildContext context) {
+    List<Widget> lista = [];
+    return FutureBuilder(
+        future: EncuestaDB.getEncuestas(),
+        builder: (context, AsyncSnapshot<List<EncuestaSqlite>> snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  Color.fromRGBO(59, 210, 127, 1),
+                ),
+              ),
+            );
+          }
+          //print('lista de la base de datos snapshot: ${snapshot.data}');
+          List<Encuesta> listaBD = [];
+          for (var e in snapshot.data!) {
+            var response = e.content;
+            //print(response);
+            var jsonResponse = convert.jsonDecode(response!);
+            print('json response: $jsonResponse');
+            Encuesta enc = Encuesta.fromMap(jsonResponse);
+            listaBD.add(enc);
+          }
+          print('listaDB: $listaBD');
+          return ListView(
+            children: _cargarEncuestasNoRelacionalBD(listaBD),
+          );
+        });
+  }
+
+  List<Widget> _cargarEncuestasNoRelacionalBD(List<dynamic>? data) {
+    List<Widget> lista = [];
+    _encuestas = [];
+    for (var encuesta in data!) {
+      _encuestas.add(encuesta);
+    }
+    for (var encuesta in _encuestas) {
+      lista.add(CardEncuestaNoRelacional(encuesta: encuesta));
+      lista.add(SizedBox(
+        height: 20,
+      ));
+    }
+    //EncuestaDB.deleteEncuestas();
+    //EncuestaDB.createTableEncuestas();
     return lista;
   }
 

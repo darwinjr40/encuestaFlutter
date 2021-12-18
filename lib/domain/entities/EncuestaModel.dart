@@ -35,9 +35,11 @@ class Encuesta {
       );
 
   Map<String, dynamic> toMap() => {
-        "id_encuesta": idEncuesta.toString(),
+        "id_encuesta": idEncuesta,
         "nombre_e": nombreE,
+        "descripcion": descripcion,
         "seccion": List<dynamic>.from(secciones.map((x) => x.toMap())),
+        "estado": estado,
         "cant_secciones": cantSecciones,
       };
 }
