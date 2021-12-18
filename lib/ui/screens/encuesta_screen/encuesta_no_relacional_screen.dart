@@ -110,10 +110,12 @@ class _EncuestaNoRelacionalScreenState
     Encuesta encuesta = data;
     int cantidadPreguntas = 0;
     for (var seccion in encuesta.secciones) {
-      listaSeccionesPage.add(SeccionScreen(
-        index: index,
-        seccion: seccion,
-        max: encuesta.cantSecciones,
+      listaSeccionesPage.add(KeepAlivePage(
+        child: SeccionScreen(
+          index: index,
+          seccion: seccion,
+          max: encuesta.cantSecciones,
+        ),
       ));
 
       cantidadPreguntas += seccion.cantPreguntas;
@@ -154,4 +156,31 @@ class _EncuestaNoRelacionalScreenState
               ],
             ));
   }
+}
+
+class KeepAlivePage extends StatefulWidget {
+  KeepAlivePage({
+    key,
+    required this.child,
+  }) : super(key: key);
+
+  final Widget child;
+
+  @override
+  _KeepAlivePageState createState() => _KeepAlivePageState();
+}
+
+class _KeepAlivePageState extends State<KeepAlivePage>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  Widget build(BuildContext context) {
+    /// Dont't forget this
+    super.build(context);
+
+    return widget.child;
+  }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
