@@ -1,7 +1,8 @@
 import 'package:encuestas_system/data/repositories/encuesta_repository.dart';
-import 'package:encuestas_system/domain/entities/Encuestador.dart';
 import 'package:encuestas_system/domain/entities/models.dart';
 import 'package:encuestas_system/domain/services/aplicacion_encuesta_service.dart';
+import 'package:encuestas_system/domain/services/encuestasDB.dart';
+import 'package:encuestas_system/domain/services/internet_connection_check.service.dart';
 import 'package:encuestas_system/ui/screens/encuesta_screen/widgets/seccion_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -26,6 +27,7 @@ class _EncuestaNoRelacionalScreenState
         ModalRoute.of(context)!.settings.arguments as Encuesta;
     return WillPopScope(
       onWillPop: () async {
+        if (!aplicacionService.aplicacionMode) return true;
         final shouldPop = await _onWillPopScope(context);
         return shouldPop ?? false;
       },
@@ -69,8 +71,12 @@ class _EncuestaNoRelacionalScreenState
       BuildContext context, Encuesta encuesta) {
     final encuestaService =
         Provider.of<EncuestaRepository>(context, listen: false);
+    final conectionService =
+        Provider.of<ConnectionStatusModel>(context, listen: false);
     return FutureBuilder(
-      future: encuestaService.getEncuestaNoRelacional(encuesta.idEncuesta),
+      future: (conectionService.isOnline)
+          ? encuestaService.getEncuestaNoRelacional(encuesta.idEncuesta)
+          : EncuestaDB.getEncuestaById(encuesta.idEncuesta),
       builder: (context, AsyncSnapshot<Encuesta> snapshot) {
         print(snapshot);
         if (!snapshot.hasData) {
@@ -102,11 +108,13 @@ class _EncuestaNoRelacionalScreenState
     int index = 1;
     Encuesta encuesta = data;
     int cantidadPreguntas = 0;
-    for (var seccion in encuesta.secciones!) {
-      listaSeccionesPage.add(SeccionScreen(
-        index: index,
-        seccion: seccion,
-        max: encuesta.cantSecciones,
+    for (var seccion in encuesta.secciones) {
+      listaSeccionesPage.add(KeepAlivePage(
+        child: SeccionScreen(
+          index: index,
+          seccion: seccion,
+          max: encuesta.cantSecciones,
+        ),
       ));
 
       cantidadPreguntas += seccion.cantPreguntas;
@@ -147,4 +155,31 @@ class _EncuestaNoRelacionalScreenState
               ],
             ));
   }
+}
+
+class KeepAlivePage extends StatefulWidget {
+  KeepAlivePage({
+    key,
+    required this.child,
+  }) : super(key: key);
+
+  final Widget child;
+
+  @override
+  _KeepAlivePageState createState() => _KeepAlivePageState();
+}
+
+class _KeepAlivePageState extends State<KeepAlivePage>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  Widget build(BuildContext context) {
+    /// Dont't forget this
+    super.build(context);
+
+    return widget.child;
+  }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

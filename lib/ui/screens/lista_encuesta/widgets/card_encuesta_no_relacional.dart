@@ -1,23 +1,37 @@
+import 'package:encuestas_system/data/repositories/encuesta_repository.dart';
 import 'package:encuestas_system/domain/entities/models.dart';
 import 'package:encuestas_system/domain/services/aplicacion_encuesta_service.dart';
+import 'package:encuestas_system/domain/services/encuestasDB.dart';
+import 'package:encuestas_system/domain/services/internet_connection_check.service.dart';
 import 'package:encuestas_system/ui/widgets/card_container.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class CardEncuestaNoRelacional extends StatelessWidget {
+class CardEncuestaNoRelacional extends StatefulWidget {
   final Encuesta encuesta;
 
   const CardEncuestaNoRelacional({required this.encuesta});
 
   @override
+  _CardEncuestaNoRelacionalState createState() =>
+      _CardEncuestaNoRelacionalState();
+}
+
+class _CardEncuestaNoRelacionalState extends State<CardEncuestaNoRelacional> {
+  @override
   Widget build(BuildContext context) {
     return CardContainer(
       child: Column(
         children: [
-          titulo(encuesta.nombreE),
+          Row(
+            children: [
+              Expanded(child: titulo(widget.encuesta.nombreE)),
+              downloadButton(context),
+            ],
+          ),
           greenLine(),
-          descripcion(encuesta.descripcion),
-          seccionesText(encuesta.cantSecciones),
+          descripcion(widget.encuesta.descripcion),
+          seccionesText(widget.encuesta.cantSecciones),
           Row(
             children: [
               Expanded(child: verEncuestaButton(context)),
@@ -28,12 +42,6 @@ class CardEncuestaNoRelacional extends StatelessWidget {
             ],
           )
         ],
-        /* padding:
-            EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0, bottom: 20.0),
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.blueAccent),
-          color: Colors.red,
-        ), */
       ),
     );
   }
@@ -115,7 +123,7 @@ class CardEncuestaNoRelacional extends StatelessWidget {
         ),
         onPressed: () {
           Navigator.pushNamed(context, 'encuestaNoRelacional',
-              arguments: encuesta);
+              arguments: widget.encuesta);
           final aplicacionService =
               Provider.of<AplicacionService>(context, listen: false);
           aplicacionService.aplicacionMode = false;
@@ -149,7 +157,7 @@ class CardEncuestaNoRelacional extends StatelessWidget {
               Provider.of<AplicacionService>(context, listen: false);
           aplicacionService.aplicacionMode = true;
           Navigator.pushNamed(context, 'encuestaNoRelacional',
-              arguments: encuesta);
+              arguments: widget.encuesta);
         },
         child: Center(
           child: Text(
@@ -162,5 +170,102 @@ class CardEncuestaNoRelacional extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget downloadButton(BuildContext context) {
+    // *si esa encuesta ya está descargado mostrar otro ícono y no hacer nada o preguntar al usuario si
+    // *quiere eliminar la encuesta
+    return FutureBuilder(
+      future: EncuestaDB.existe(widget.encuesta),
+      builder: (context, AsyncSnapshot<bool> snapshot) {
+        print('bool: ${snapshot.data}');
+        if (!snapshot.hasData) {
+          return Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(
+                  Color.fromRGBO(59, 210, 127, 1)),
+            ),
+          );
+        }
+        if (snapshot.data!) {
+          return Container(
+            child: IconButton(
+              icon: Icon(
+                Icons.download_done_outlined,
+                color: Color.fromRGBO(59, 210, 127, 1.0),
+              ),
+              onPressed: () {
+                //descargarEncuesta(widget.encuesta, context);
+                //return
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text('Alerta'),
+                    content: Text(
+                        '¿Eliminar encuesta del almacenamiento del dispositivo?'),
+                    actions: [
+                      ElevatedButton(
+                          child: Text('Eliminar'),
+                          onPressed: () async {
+                            //Navigator.of(context).pop();
+                            await EncuestaDB.delete(widget.encuesta);
+                            setState(() {});
+                          })
+                    ],
+                  ),
+                );
+                //setState(() {});
+                //EncuestaDB.descargarEncuesta(widget.encuesta);
+              },
+            ),
+          );
+        } else {
+          return Consumer<ConnectionStatusModel>(
+            builder: (context, conection, _) {
+              return (conection.isOnline)
+                  ? Container(
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.file_download,
+                          color: Color.fromRGBO(59, 210, 127, 1.0),
+                        ),
+                        onPressed: () async {
+                          await descargarEncuesta(widget.encuesta, context);
+                          setState(() {});
+                          //EncuestaDB.descargarEncuesta(widget.encuesta);
+                        },
+                      ),
+                    )
+                  : Container();
+            },
+          );
+        }
+      },
+    );
+    /* return (await EncuestaDB.existe(widget.encuesta))
+        ? Container(
+            child: IconButton(
+              icon: Icon(
+                Icons.file_download,
+                color: Color.fromRGBO(59, 210, 127, 1.0),
+              ),
+              onPressed: () {
+                descargarEncuesta(widget.encuesta, context);
+                //EncuestaDB.descargarEncuesta(widget.encuesta);
+              },
+            ),
+          )
+        : Container(
+            child: Text('dsd'),
+          ); */
+  }
+
+  Future<void> descargarEncuesta(
+      Encuesta encuesta, BuildContext context) async {
+    final encuestaService =
+        Provider.of<EncuestaRepository>(context, listen: false);
+    Encuesta e = await encuestaService
+        .getEncuestaNoRelacional(widget.encuesta.idEncuesta);
+    EncuestaDB.descargarEncuesta(e);
   }
 }
