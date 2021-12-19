@@ -49,7 +49,7 @@ class AplicacionService with ChangeNotifier {
     if (pregunta.tipo == "multiple") {
       addSeleccion(pregunta, opcion);
     }
-    /*  if (pregunta.tipo == "abierta")  {
+    if (pregunta.tipo == "abierta") {
       Respuesta? p = existeRespuesta(pregunta);
       Respuesta nuevaRespuesta = new Respuesta(
           idPregunta: pregunta.idPregunta,
@@ -60,10 +60,13 @@ class AplicacionService with ChangeNotifier {
         nuevaRespuesta.respuestaText = opcion.nombre;
         respuestas.add(nuevaRespuesta);
       } else {
-        p.respuestaText = opcion.nombre;
-        respuestas.add(nuevaRespuesta);
+        if (p.respuestaText.length > 0) {
+          p.respuestaText = opcion.nombre;
+        } else {
+          eliminarRespuesta(pregunta);
+        }
       }
-    } */
+    }
     print(jsonEncode(respuestas));
   }
 

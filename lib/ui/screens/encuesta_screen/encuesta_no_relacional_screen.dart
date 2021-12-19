@@ -136,13 +136,15 @@ class _EncuestaNoRelacionalScreenState
                 borderRadius: BorderRadius.circular(10),
               ),
               title: Text(
-                  '¿ Quieres salir sin terminar de aplicar la encuesta ? '),
+                  '¿ Seguro que quieres salir sin terminar de aplicar la encuesta ? '),
               actions: [
                 ElevatedButton(
+                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color.fromRGBO(59, 210, 127, 1.0))),
                   onPressed: () => Navigator.pop(context, false),
                   child: Text('No'),
                 ),
                 ElevatedButton(
+                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color.fromRGBO(255, 1, 1, 1.0))),
                   onPressed: () {
                     final aplicacionService =
                         Provider.of<AplicacionService>(context, listen: false);
