@@ -26,7 +26,6 @@ class _CheckBoxOptionState extends State<CheckBoxOption> {
       value: this.selected, //checkbox.selected,
       title: Text(widget.opcion.nombre),
       onChanged: (value) {
-        List<Opcion> opcionesSelecionadas = [];
         setState(() {
           this.selected = value!;
           final aplicacionService =

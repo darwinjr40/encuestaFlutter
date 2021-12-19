@@ -75,7 +75,11 @@ class _SeccionScreenState extends State<SeccionScreen> {
                                 ElevatedButton(
                                     child: Text('Aceptar'),
                                     onPressed: () {
-                                      Navigator.of(context).pop();
+                                      print(
+                                          'cantidad de resps: ${aplicacionService.respuestas.length}');
+                                      Navigator.pushNamed(
+                                          context, 'lista_encuesta');
+                                      //Navigator.of(context).pop();
                                     })
                               ],
                             ),

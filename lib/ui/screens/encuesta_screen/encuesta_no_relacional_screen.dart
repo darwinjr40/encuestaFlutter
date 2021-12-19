@@ -120,12 +120,11 @@ class _EncuestaNoRelacionalScreenState
       cantidadPreguntas += seccion.cantPreguntas;
       index++;
     }
-    /* aplicacionService.aplicacion!.idEncuesta = encuesta.idEncuesta;
+    var applicacionEncuesta = aplicacionService.aplicacion;
     aplicacionService.preguntasTotales = cantidadPreguntas;
-    aplicacionService.aplicacion.encuestador.idEncuestador = 'GPOtngw5O9bnnwGrfYGbLdQGlUb2';
-    aplicacionService.aplicacion.encuestador.nombre = 'Javier';
-    aplicacionService.aplicacion.encuestador.ci = '12345678';
-    aplicacionService.aplicacion.encuestador.fechaNac=  '05-05-2010'; */
+    applicacionEncuesta.idEncuesta = encuesta.idEncuesta;
+    print('encuesta app id: ${applicacionEncuesta.idEncuesta}');
+
     return listaSeccionesPage;
   }
 
