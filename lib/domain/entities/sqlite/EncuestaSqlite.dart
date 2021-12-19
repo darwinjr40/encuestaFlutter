@@ -1,5 +1,3 @@
-import 'package:sqflite/sqflite.dart';
-
 class EncuestaSqlite {
   //final int? id;
   final String? idEncuesta;

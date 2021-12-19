@@ -1,5 +1,4 @@
 import 'package:encuestas_system/data/repositories/encuesta_repository.dart';
-import 'package:encuestas_system/domain/entities/Encuestador.dart';
 import 'package:encuestas_system/domain/entities/models.dart';
 import 'package:encuestas_system/domain/services/aplicacion_encuesta_service.dart';
 import 'package:encuestas_system/domain/services/encuestasDB.dart';

@@ -184,7 +184,9 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
         height: 20,
       ));
     }
+    //EncuestaDB.deleteAplicaciones();
     //EncuestaDB.deleteEncuestas();
+    //EncuestaDB.createTableAplicaciones();
     //EncuestaDB.createTableEncuestas();
     return lista;
   }
