@@ -4,18 +4,20 @@ import 'package:encuestas_system/domain/entities/Pregunta.dart';
 
 class AplicacionEncuesta {
   AplicacionEncuesta({
-    required this.idEncuesta,
-    required this.createAt,
-    required this.updateAt,
+    this.idEncuesta,
+    this.nombre,
+    this.createAt,
+    this.updateAt,
     //required this.encuestador,
-    required this.preguntas,
+    this.preguntas,
   });
 
-  String idEncuesta;
-  String createAt;
-  String updateAt;
+  String? idEncuesta;
+  String? nombre;
+  String? createAt;
+  String? updateAt;
   //Encuestador encuestador;
-  List<Pregunta> preguntas;
+  List<Pregunta>? preguntas;
 
   factory AplicacionEncuesta.fromJson(String str) =>
       AplicacionEncuesta.fromMap(json.decode(str));
@@ -27,6 +29,7 @@ class AplicacionEncuesta {
         idEncuesta: json["id_encuesta"],
         createAt: json["createAt"],
         updateAt: json["createUpdate"],
+        nombre: json["nombre"],
         //encuestador: Encuestador.fromMap(json["encuestador"]),
         preguntas: List<Pregunta>.from(
             json["preguntas"].map((x) => Pregunta.fromMap(x))),
@@ -36,7 +39,8 @@ class AplicacionEncuesta {
         "id_encuesta": idEncuesta,
         "createAt": createAt,
         "createUpdate": updateAt,
+        "nombre": nombre,
         //"encuestador": encuestador.toMap(),
-        "preguntas": List<dynamic>.from(preguntas.map((x) => x.toMap())),
+        "preguntas": List<dynamic>.from(preguntas!.map((x) => x.toMap())),
       };
 }

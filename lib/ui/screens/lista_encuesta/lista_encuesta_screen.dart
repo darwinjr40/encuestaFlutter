@@ -2,6 +2,7 @@ import 'dart:convert' as convert;
 import 'package:encuestas_system/data/repositories/encuesta_repository.dart';
 import 'package:encuestas_system/domain/entities/models.dart';
 import 'package:encuestas_system/domain/entities/sqlite/EncuestaSqlite.dart';
+import 'package:encuestas_system/domain/services/aplicacion_encuesta_service.dart';
 import 'package:encuestas_system/domain/services/encuestasDB.dart';
 import 'package:encuestas_system/domain/services/internet_connection_check.service.dart';
 import 'package:encuestas_system/ui/screens/lista_encuesta/widgets/card_encuesta.dart';
@@ -22,10 +23,21 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
   List<CardEncuesta> _listaCardEncuestas = [];
 
   @override
+  void initState() {
+    super.initState();
+    final aplicacionService =
+        Provider.of<AplicacionService>(context, listen: false);
+    aplicacionService.respuestas = [];
+  }
+
+  @override
   Widget build(BuildContext context) {
     final conectionService =
         Provider.of<ConnectionStatusModel>(context, listen: false);
     return Scaffold(
+      drawer: Drawer(
+        child: getDrawer(),
+      ),
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(59, 210, 127, 1.0),
         title: Text(
@@ -55,6 +67,34 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
         ],
       ),
       body: listarEncuestasNoRelacional(context),
+    );
+  }
+
+  Container getDrawer() {
+    return Container(
+      margin: EdgeInsets.only(top: 300.0),
+      child: Column(
+        children: [
+          Container(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, 'lista_encuesta');
+              },
+              child: Text('Lista Encuestas'),
+            ),
+          ),
+          Container(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, 'aplicaciones');
+              },
+              child: Text('Aplicaciones'),
+            ),
+          ),
+        ],
+      ),
     );
   }
 

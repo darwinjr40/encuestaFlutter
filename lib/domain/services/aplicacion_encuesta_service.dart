@@ -8,13 +8,23 @@ import 'package:flutter/material.dart';
 class AplicacionService with ChangeNotifier {
   bool aplicacionMode = false;
   int preguntasTotales = 0;
-  AplicacionEncuesta? aplicacion;
+  AplicacionEncuesta aplicacion = new AplicacionEncuesta();
   List<Respuesta> respuestas = [];
+
   Respuesta? existeRespuesta(Pregunta pregunta) {
     for (var respuesta in respuestas) {
       if (respuesta.idPregunta == pregunta.idPregunta) return respuesta;
     }
     return null;
+  }
+
+  void eliminarRespuesta(Pregunta pregunta) {
+    for (int i = 0; i < this.respuestas.length; i++) {
+      if (respuestas[i].idPregunta == pregunta.idPregunta) {
+        this.respuestas.removeAt(i);
+        break;
+      }
+    }
   }
 
   void seleccionar(Pregunta pregunta, Opcion opcion) {
@@ -60,14 +70,15 @@ class AplicacionService with ChangeNotifier {
   void eliminarSeleccion(Pregunta pregunta, Opcion opcion) {
     Respuesta? respuesta = existeRespuesta(pregunta);
     if (respuesta == null) return;
-    print(respuesta.idPregunta);
-    for (int i = 0; i < respuesta.opcions.length; i++) {
-      Opcion op = respuesta.opcions[i];
-      if (op.idResp == opcion.idResp) {
-        respuesta.opcions.removeAt(i);
-        print('eliminado :D');
-        break;
+    if (respuesta.opcions.length > 0) {
+      for (int i = 0; i < respuesta.opcions.length; i++) {
+        Opcion op = respuesta.opcions[i];
+        if (op.idResp == opcion.idResp) {
+          respuesta.opcions.removeAt(i);
+          break;
+        }
       }
+      if (respuesta.opcions.length == 0) eliminarRespuesta(pregunta);
     }
   }
 

@@ -1,3 +1,4 @@
+import 'package:encuestas_system/domain/entities/sqlite/AplicacionSqlite.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:encuestas_system/domain/entities/EncuestaModel.dart';
 import 'package:encuestas_system/domain/entities/sqlite/EncuestaSqlite.dart';
@@ -8,7 +9,7 @@ class EncuestaDB {
     return openDatabase(join(await getDatabasesPath(), 'encuestas.db'),
         onCreate: (db, version) {
       return db.execute(
-        "create table encuestas (id_encuesta TEXT, content TEXT); create table aplicaciones (id_aplicacion INTEGER, content TEXT); ",
+        "create table encuestas (id_encuesta TEXT, content TEXT); create table aplicaciones (id_aplicacion INTEGER AUTOINCREMENT, content TEXT); ",
       );
     }, version: 1);
   }
@@ -65,6 +66,19 @@ class EncuestaDB {
           //id: encuestasMap[i]['id'],
           idEncuesta: encuestasMap[i]['id_encuesta'],
           content: encuestasMap[i]['content']),
+    );
+  }
+
+  static Future<List<AplicacionSqlite>> getAplicaciones() async {
+    Database database = await _openDB();
+    final List<Map<dynamic, dynamic>> aplicacionesMap =
+        await database.query("aplicaciones");
+    return List.generate(
+      aplicacionesMap.length,
+      (i) => AplicacionSqlite(
+          id: aplicacionesMap[i]['id'],
+          content: aplicacionesMap[i]['content'],
+          onServer: aplicacionesMap[i]['onServer']),
     );
   }
 

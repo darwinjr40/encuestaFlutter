@@ -1,5 +1,6 @@
 import 'package:encuestas_system/data/repositories/encuesta_repository.dart';
 import 'package:encuestas_system/domain/services/aplicacion_encuesta_service.dart';
+import 'package:encuestas_system/ui/screens/aplicaciones_screen/lista_aplicaciones_screen.dart';
 import 'package:encuestas_system/ui/screens/encuesta_screen/encuesta_no_relacional_screen.dart';
 import 'package:encuestas_system/ui/screens/screens.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,8 @@ class MyApp extends StatelessWidget {
       routes: {
         'lista_encuesta': (_) => ListaEncuestaScreen(),
         'encuesta': (_) => EncuestaScreen(),
-        'encuestaNoRelacional': (_) => EncuestaNoRelacionalScreen()
+        'encuestaNoRelacional': (_) => EncuestaNoRelacionalScreen(),
+        'aplicaciones': (_) => ListaAplicacionScreen(),
       },
       debugShowCheckedModeBanner: false,
     );
