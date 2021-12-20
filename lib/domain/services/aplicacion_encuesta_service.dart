@@ -37,7 +37,6 @@ class AplicacionService with ChangeNotifier {
           idPregunta: pregunta.idPregunta,
           nombrePregunta: pregunta.nombreP,
           opcions: opciones,
-          respuestaText: "",
         );
         respuestas.add(nuevaRespuesta);
       }
@@ -60,7 +59,7 @@ class AplicacionService with ChangeNotifier {
         nuevaRespuesta.respuestaText = opcion.nombre;
         respuestas.add(nuevaRespuesta);
       } else {
-        if (p.respuestaText.length > 0) {
+        if (p.respuestaText!.length > 0) {
           p.respuestaText = opcion.nombre;
         }
         if (p.respuestaText == '') eliminarRespuesta(pregunta);
@@ -97,7 +96,6 @@ class AplicacionService with ChangeNotifier {
         idPregunta: pregunta.idPregunta,
         nombrePregunta: pregunta.nombreP,
         opcions: opciones,
-        respuestaText: "",
       );
       respuestas.add(nuevaRespuesta);
     } else {

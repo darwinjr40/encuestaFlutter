@@ -29,7 +29,7 @@ class AplicacionEncuesta {
       AplicacionEncuesta(
         idEncuesta: json["id_encuesta"],
         createAt: json["createAt"],
-        updateAt: json["createUpdate"],
+        updateAt: json["updateAt"],
         nombre: json["nombre"],
         //encuestador: Encuestador.fromMap(json["encuestador"]),
         respDePreguntas: List<Respuesta>.from(
@@ -39,7 +39,7 @@ class AplicacionEncuesta {
   Map<String, dynamic> toMap() => {
         "id_encuesta": idEncuesta,
         "createAt": createAt,
-        "createUpdate": updateAt,
+        "updateAt": updateAt,
         "nombre": nombre,
         //"encuestador": encuestador.toMap(),
         "respDePreguntas": List<dynamic>.from(respDePreguntas.map((x) => x.toMap())),
