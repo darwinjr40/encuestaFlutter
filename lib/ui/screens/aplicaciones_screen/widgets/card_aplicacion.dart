@@ -18,11 +18,13 @@ class _CardAplicacionState extends State<CardAplicacion> {
     return CardContainer(
       child: Row(
         children: [
-          Column(
-            children: [
-              titulo(widget.aplicacion.nombre!),
-              fecha(widget.aplicacion.createAt!),
-            ],
+          Expanded(
+            child: Column(
+              children: [
+                titulo(widget.aplicacion.nombre!),
+                fecha(widget.aplicacion.createAt!),
+              ],
+            ),
           ),
           iconoServer(widget.status),
         ],
@@ -67,7 +69,6 @@ class _CardAplicacionState extends State<CardAplicacion> {
 
   Widget iconoServer(bool status) {
     return Container(
-      color: Colors.red,
       child: (status)
           ? Icon(Icons.arrow_back_ios_outlined)
           : Icon(Icons.arrow_circle_down),

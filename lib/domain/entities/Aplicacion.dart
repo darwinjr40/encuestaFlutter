@@ -5,18 +5,20 @@ import 'package:encuestas_system/domain/entities/Respuesta.dart';
 
 class AplicacionEncuesta {
   AplicacionEncuesta({
+    this.id,
     this.idEncuesta,
     this.nombre,
     this.createAt,
-    this.updateAt,
+    //this.updateAt,
     //required this.encuestador,
     required this.respDePreguntas,
   });
 
+  String? id;
   String? idEncuesta;
   String? nombre;
   String? createAt;
-  String? updateAt;
+  //String? updateAt;
   //Encuestador encuestador;
   List<Respuesta> respDePreguntas;
 
@@ -27,21 +29,24 @@ class AplicacionEncuesta {
 
   factory AplicacionEncuesta.fromMap(Map<String, dynamic> json) =>
       AplicacionEncuesta(
+        id: json["id"],
         idEncuesta: json["id_encuesta"],
         createAt: json["createAt"],
-        updateAt: json["createUpdate"],
+        //updateAt: json["createUpdate"],
         nombre: json["nombre"],
         //encuestador: Encuestador.fromMap(json["encuestador"]),
         respDePreguntas: List<Respuesta>.from(
-            json["respuestas"].map((x) => Pregunta.fromMap(x))),
+            json["respDePreguntas"].map((x) => Respuesta.fromMap(x))),
       );
 
   Map<String, dynamic> toMap() => {
+        "id": id,
         "id_encuesta": idEncuesta,
         "createAt": createAt,
-        "createUpdate": updateAt,
+        //"createUpdate": updateAt,
         "nombre": nombre,
         //"encuestador": encuestador.toMap(),
-        "respDePreguntas": List<dynamic>.from(respDePreguntas.map((x) => x.toMap())),
+        "respDePreguntas":
+            List<dynamic>.from(respDePreguntas.map((x) => x.toMap())),
       };
 }

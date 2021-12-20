@@ -1,3 +1,4 @@
+import 'package:encuestas_system/domain/entities/Aplicacion.dart';
 import 'package:encuestas_system/domain/entities/sqlite/AplicacionSqlite.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:encuestas_system/domain/entities/EncuestaModel.dart';
@@ -9,7 +10,7 @@ class EncuestaDB {
     return openDatabase(join(await getDatabasesPath(), 'encuestas.db'),
         onCreate: (db, version) {
       return db.execute(
-        "create table encuestas (id_encuesta TEXT, content TEXT); create table aplicaciones (id_aplicacion INTEGER AUTOINCREMENT, content TEXT); ",
+        "create table encuestas (id_encuesta TEXT, content TEXT); create table aplicaciones (id TEXT, content TEXT, onServer INTEGER)",
       );
     }, version: 1);
   }
@@ -18,7 +19,7 @@ class EncuestaDB {
     Database database = await _openDB();
     EncuestaSqlite encuestaSqlite = new EncuestaSqlite(
         idEncuesta: encuesta.idEncuesta, content: encuesta.toJson());
-    print('se pudo');
+    //print('se pudo');
     return database.insert("encuestas", encuestaSqlite.toMap());
   }
 
@@ -47,7 +48,7 @@ class EncuestaDB {
   static Future<void> createTableAplicaciones() async {
     Database database = await _openDB();
     return database.execute(
-        "create table aplicaciones (id_encuesta TEXT, content TEXT); ");
+        "create table aplicaciones (id TEXT , content TEXT, onServer INTEGER)");
   }
 
   /* static Future<int> update(Encuesta encuesta) async {
@@ -76,7 +77,7 @@ class EncuestaDB {
     return List.generate(
       aplicacionesMap.length,
       (i) => AplicacionSqlite(
-          id: aplicacionesMap[i]['id'],
+          id: aplicacionesMap[i]['id'], //aplicacionesMap[i]['id'],
           content: aplicacionesMap[i]['content'],
           onServer: aplicacionesMap[i]['onServer']),
     );
@@ -110,6 +111,22 @@ class EncuestaDB {
     Database database = await _openDB();
     List<Map<String, dynamic>> list = await database
         .rawQuery('SELECT * FROM encuestas where id_encuesta = "$id"');
+    return Encuesta.fromJson(list[0]['content']);
+  }
+
+  static Future<int> saveAplicacion(AplicacionEncuesta aplicacion) async {
+    Database database = await _openDB();
+
+    AplicacionSqlite aplicacionSqlite = new AplicacionSqlite(
+        id: aplicacion.id, content: aplicacion.toJson(), onServer: 0);
+    print('aplicación almacenada');
+    return database.insert("aplicaciones", aplicacionSqlite.toMap());
+  }
+
+  static Future<Encuesta> getAplicacionById(int id) async {
+    Database database = await _openDB();
+    List<Map<String, dynamic>> list = await database
+        .rawQuery('SELECT * FROM aplicaciones where id_encuesta = "$id"');
     return Encuesta.fromJson(list[0]['content']);
   }
 }

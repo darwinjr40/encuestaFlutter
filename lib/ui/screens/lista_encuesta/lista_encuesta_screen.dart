@@ -104,7 +104,7 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
     return FutureBuilder(
       future: encuestaService.getListRelacional(),
       builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
-        print(snapshot);
+        //print(snapshot);
         if (!snapshot.hasData) {
           return Center(
             child: CircularProgressIndicator(
@@ -113,7 +113,7 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
             ),
           );
         }
-        print('si hay encuestas');
+        //print('si hay encuestas');
         return Container(
           padding: EdgeInsets.all(10.0),
           child: ListView(
@@ -180,14 +180,6 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
                 );
               },
             );
-      /* Container(
-              padding: EdgeInsets.all(10.0),
-              child: ListView(
-                children: [
-                  _cargarEncuestasDB(context),
-                ],
-              ),
-            ); */
     });
   }
 
@@ -249,9 +241,8 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
           List<Encuesta> listaBD = [];
           for (var e in snapshot.data!) {
             var response = e.content;
-            //print(response);
             var jsonResponse = convert.jsonDecode(response!);
-            print('json response: $jsonResponse');
+            //print('json response: $jsonResponse');
             Encuesta enc = Encuesta.fromMap(jsonResponse);
             listaBD.add(enc);
           }

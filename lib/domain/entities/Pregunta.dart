@@ -6,13 +6,13 @@ class Pregunta {
   Pregunta({
     required this.idPregunta,
     required this.nombreP,
-    required this.tipo,
+    this.tipo,
     required this.opciones,
   });
 
   String idPregunta;
   String nombreP;
-  String tipo;
+  String? tipo;
   List<Opcion> opciones;
 
   factory Pregunta.fromJson(String str) => Pregunta.fromMap(json.decode(str));

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:ui';
 import 'package:encuestas_system/domain/entities/models.dart';
 import 'package:encuestas_system/domain/services/aplicacion_encuesta_service.dart';
+import 'package:encuestas_system/domain/services/encuestasDB.dart';
 import 'package:encuestas_system/ui/screens/encuesta_screen/widgets/card_pregunta_abierta.dart';
 import 'package:encuestas_system/ui/screens/encuesta_screen/widgets/card_pregunta_cerrada.dart';
 import 'package:encuestas_system/ui/screens/encuesta_screen/widgets/card_pregunta_multiple.dart';
@@ -74,22 +75,27 @@ class _SeccionScreenState extends State<SeccionScreen> {
                                   'Encuesta lista para enviar al servidor'),
                               actions: [
                                 ElevatedButton(
-                                    child: Text('Aceptar'),
-                                    onPressed: () {
-                                      aplicacionService
-                                              .aplicacion.respDePreguntas =
-                                          aplicacionService.respuestas;
-                                      aplicacionService.aplicacion.createAt =
-                                          aplicacionService.formatFecha(
-                                              DateTime.now().toString());
-                                      print('APLICACION ENCUESTA \n');
-                                      print(jsonEncode(
-                                          aplicacionService.aplicacion));
-
-                                      Navigator.pushNamed(
-                                          context, 'lista_encuesta');
-                                      //Navigator.of(context).pop();
-                                    })
+                                  child: Text('Aceptar'),
+                                  onPressed: () {
+                                    aplicacionService
+                                            .aplicacion.respDePreguntas =
+                                        aplicacionService.respuestas;
+                                    aplicacionService.aplicacion.createAt =
+                                        aplicacionService.formatFecha(
+                                            DateTime.now().toString());
+                                    print('APLICACION ENCUESTA \n');
+                                    print(jsonEncode(
+                                        aplicacionService.aplicacion));
+                                    aplicacionService.aplicacion.id =
+                                        aplicacionService.formatFecha(
+                                            DateTime.now().toString());
+                                    EncuestaDB.saveAplicacion(
+                                        aplicacionService.aplicacion);
+                                    Navigator.pushNamed(
+                                        context, 'lista_encuesta');
+                                    //Navigator.of(context).pop();
+                                  },
+                                )
                               ],
                             ),
                           );

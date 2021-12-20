@@ -1,23 +1,21 @@
 class AplicacionSqlite {
   //final int? id;
-  final String id;
+  String? id;
   final String content;
-  bool onServer = false;
+  int onServer = 0; //* 0 si no está en el server, 1 si ya está subido
 
-  AplicacionSqlite(
-      {required this.id, required this.content, required this.onServer});
+  AplicacionSqlite({this.id, required this.content, required this.onServer});
 
   Map<String, dynamic> toMap() {
-    // used when inserting data to the database
     return <String, dynamic>{
-      //"id": id,
       "id": id,
       "content": content,
+      "onServer": onServer,
     };
   }
 
   @override
   String toString() {
-    return " idAplicacion: ${this.id}, content: ${this.content}";
+    return " idAplicacion: ${this.id}, content: ${this.content}, en server = ${this.onServer}";
   }
 }

@@ -38,22 +38,25 @@ class _ListaAplicacionScreenState extends State<ListaAplicacionScreen> {
               ),
             );
           }
+
           if (snapshot.data!.length < 1)
             return Center(
               child: Text('No hay aplicaciones para mostrar'),
             );
-
+          //print('snap: ${snapshot.data}');
           List<AplicacionEncuesta> listaAplicacion = [];
           for (var e in snapshot.data!) {
             var response = e.content;
+            //print(response);
             var jsonResponse = convert.jsonDecode(response!);
+            print('aplicacionn json response: $jsonResponse');
             AplicacionEncuesta enc = AplicacionEncuesta.fromMap(jsonResponse);
             listaAplicacion.add(enc);
           }
           return Container(
             padding: EdgeInsets.all(10.0),
             child: ListView(
-              children: _cargarAplicaciones(snapshot.data, context),
+              children: _cargarAplicaciones(listaAplicacion, context),
             ),
           );
         });
@@ -61,6 +64,7 @@ class _ListaAplicacionScreenState extends State<ListaAplicacionScreen> {
 
   _cargarAplicaciones(List? data, BuildContext context) {
     List<Widget> lista = [];
+    _aplicaciones = [];
     for (var aplicacion in data!) {
       _aplicaciones.add(aplicacion);
     }
