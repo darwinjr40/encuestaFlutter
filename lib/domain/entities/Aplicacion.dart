@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:encuestas_system/domain/entities/Pregunta.dart';
+import 'package:encuestas_system/domain/entities/Respuesta.dart';
 
 class AplicacionEncuesta {
   AplicacionEncuesta({
@@ -9,7 +10,7 @@ class AplicacionEncuesta {
     this.createAt,
     this.updateAt,
     //required this.encuestador,
-    this.preguntas,
+    required this.respDePreguntas,
   });
 
   String? idEncuesta;
@@ -17,7 +18,7 @@ class AplicacionEncuesta {
   String? createAt;
   String? updateAt;
   //Encuestador encuestador;
-  List<Pregunta>? preguntas;
+  List<Respuesta> respDePreguntas;
 
   factory AplicacionEncuesta.fromJson(String str) =>
       AplicacionEncuesta.fromMap(json.decode(str));
@@ -31,8 +32,8 @@ class AplicacionEncuesta {
         updateAt: json["createUpdate"],
         nombre: json["nombre"],
         //encuestador: Encuestador.fromMap(json["encuestador"]),
-        preguntas: List<Pregunta>.from(
-            json["preguntas"].map((x) => Pregunta.fromMap(x))),
+        respDePreguntas: List<Respuesta>.from(
+            json["respuestas"].map((x) => Pregunta.fromMap(x))),
       );
 
   Map<String, dynamic> toMap() => {
@@ -41,6 +42,6 @@ class AplicacionEncuesta {
         "createUpdate": updateAt,
         "nombre": nombre,
         //"encuestador": encuestador.toMap(),
-        "preguntas": List<dynamic>.from(preguntas!.map((x) => x.toMap())),
+        "respDePreguntas": List<dynamic>.from(respDePreguntas.map((x) => x.toMap())),
       };
 }

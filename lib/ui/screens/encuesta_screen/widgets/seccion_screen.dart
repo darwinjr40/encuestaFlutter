@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ui';
 import 'package:encuestas_system/domain/entities/models.dart';
 import 'package:encuestas_system/domain/services/aplicacion_encuesta_service.dart';
@@ -75,8 +76,16 @@ class _SeccionScreenState extends State<SeccionScreen> {
                                 ElevatedButton(
                                     child: Text('Aceptar'),
                                     onPressed: () {
-                                      print(
-                                          'cantidad de resps: ${aplicacionService.respuestas.length}');
+                                      aplicacionService
+                                              .aplicacion.respDePreguntas =
+                                          aplicacionService.respuestas;
+                                      aplicacionService.aplicacion.createAt =
+                                          aplicacionService.formatFecha(
+                                              DateTime.now().toString());
+                                      print('APLICACION ENCUESTA \n');
+                                      print(jsonEncode(
+                                          aplicacionService.aplicacion));
+
                                       Navigator.pushNamed(
                                           context, 'lista_encuesta');
                                       //Navigator.of(context).pop();

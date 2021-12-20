@@ -78,7 +78,6 @@ class _EncuestaNoRelacionalScreenState
           ? encuestaService.getEncuestaNoRelacional(encuesta.idEncuesta)
           : EncuestaDB.getEncuestaById(encuesta.idEncuesta),
       builder: (context, AsyncSnapshot<Encuesta> snapshot) {
-        print(snapshot);
         if (!snapshot.hasData) {
           return Center(
             child: CircularProgressIndicator(
@@ -123,11 +122,9 @@ class _EncuestaNoRelacionalScreenState
     var applicacionEncuesta = aplicacionService.aplicacion;
     aplicacionService.preguntasTotales = cantidadPreguntas;
     applicacionEncuesta.idEncuesta = encuesta.idEncuesta;
-    print('encuesta app id: ${applicacionEncuesta.idEncuesta}');
-
+    applicacionEncuesta.nombre = encuesta.nombreE;
     return listaSeccionesPage;
   }
-
   Future<bool?> _onWillPopScope(BuildContext context) {
     return showDialog(
         context: context,
@@ -139,12 +136,16 @@ class _EncuestaNoRelacionalScreenState
                   '¿ Seguro que quieres salir sin terminar de aplicar la encuesta ? '),
               actions: [
                 ElevatedButton(
-                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color.fromRGBO(59, 210, 127, 1.0))),
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                          Color.fromRGBO(59, 210, 127, 1.0))),
                   onPressed: () => Navigator.pop(context, false),
                   child: Text('No'),
                 ),
                 ElevatedButton(
-                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color.fromRGBO(255, 1, 1, 1.0))),
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                          Color.fromRGBO(255, 1, 1, 1.0))),
                   onPressed: () {
                     final aplicacionService =
                         Provider.of<AplicacionService>(context, listen: false);

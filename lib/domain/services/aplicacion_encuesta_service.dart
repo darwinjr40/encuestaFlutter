@@ -1,14 +1,14 @@
 import 'dart:convert';
 
-import 'package:encuestas_system/domain/entities/Respuesta.dart';
 import 'package:encuestas_system/domain/entities/Aplicacion.dart';
+import 'package:encuestas_system/domain/entities/Respuesta.dart';
 import 'package:encuestas_system/domain/entities/models.dart';
 import 'package:flutter/material.dart';
 
 class AplicacionService with ChangeNotifier {
   bool aplicacionMode = false;
   int preguntasTotales = 0;
-  AplicacionEncuesta aplicacion = new AplicacionEncuesta();
+  AplicacionEncuesta aplicacion = new AplicacionEncuesta(respDePreguntas: []);
   List<Respuesta> respuestas = [];
 
   Respuesta? existeRespuesta(Pregunta pregunta) {
@@ -62,9 +62,8 @@ class AplicacionService with ChangeNotifier {
       } else {
         if (p.respuestaText.length > 0) {
           p.respuestaText = opcion.nombre;
-        } else {
-          eliminarRespuesta(pregunta);
         }
+        if (p.respuestaText == '') eliminarRespuesta(pregunta);
       }
     }
     print(jsonEncode(respuestas));
@@ -117,6 +116,13 @@ class AplicacionService with ChangeNotifier {
         print('id: ${opcion.idResp}, nombre: ${opcion.nombre}');
       }
     }
+  }
+
+  String formatFecha(String date) {
+    var fecha = date.substring(0, 10);
+    var hora = date.substring(11, 19);
+    var year = fecha.split('-');
+    return '${year[2]}-${year[1]}-${year[0]} $hora';
   }
 
   void cancelar() {
