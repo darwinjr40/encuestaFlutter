@@ -23,8 +23,7 @@ class AplicacionTimer {
   Future<List<AplicacionEncuesta>> getListAplicacionesNoSubidas() async {
     List<AplicacionEncuesta> listaAplicaciones = [];
     List<AplicacionSqlite> lista =
-        await EncuestaDB.getAplicaciones(); //* retorna AplicacionesSqlite
-
+        await EncuestaDB.getAplicacionesNoSubidas(); //* retorna AplicacionesSqlite
     //* convertir a objetos AplicacionEncuesta
     lista.forEach((element) {
       String content = element.content;
@@ -35,7 +34,15 @@ class AplicacionTimer {
     return listaAplicaciones;
   }
 
-  void subirAplicaciones(List<AplicacionEncuesta> aplicaciones) {}
+  Future subirAplicaciones(List<AplicacionEncuesta> aplicaciones) async {
+    String urlVeryEncuesta =
+        'encuesta-login-web.herokuapp.com/API/encuestas/B/existeAplicacionEncuesta/';
+    aplicaciones.forEach((encuestaAGuargdar) async{
+      final url = Uri.https(urlVeryEncuesta, encuestaAGuargdar.id!);
+      final existe = await http.get(url);
+      print('ID_ENCUESTA SQL: ${encuestaAGuargdar.id}, $existe');
+    });
+  }
 
   Future<String> sendAplicacion(AplicacionEncuesta encuestaAplicada) async {
     String urlAplicacion = 'encuestasapp-e3fc3-default-rtdb.firebaseio.com';

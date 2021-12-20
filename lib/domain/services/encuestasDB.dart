@@ -86,7 +86,7 @@ class EncuestaDB {
   static Future<List<AplicacionSqlite>> getAplicacionesNoSubidas() async {
     Database database = await _openDB();
     final List<Map<dynamic, dynamic>> aplicacionesMap =
-        await database.query("aplicaciones");
+        await database.query("aplicaciones", where: "aplicaciones.onServer = ?", whereArgs: [0]);
     return List.generate(
       aplicacionesMap.length,
       (i) => AplicacionSqlite(
