@@ -83,6 +83,19 @@ class EncuestaDB {
     );
   }
 
+  static Future<List<AplicacionSqlite>> getAplicacionesNoSubidas() async {
+    Database database = await _openDB();
+    final List<Map<dynamic, dynamic>> aplicacionesMap =
+        await database.query("aplicaciones");
+    return List.generate(
+      aplicacionesMap.length,
+      (i) => AplicacionSqlite(
+          id: aplicacionesMap[i]['id'], //aplicacionesMap[i]['id'],
+          content: aplicacionesMap[i]['content'],
+          onServer: aplicacionesMap[i]['onServer']),
+    );
+  }
+
   static Future<int> descargarEncuesta(Encuesta encuesta) async {
     Database database = await _openDB();
 
@@ -128,5 +141,10 @@ class EncuestaDB {
     List<Map<String, dynamic>> list = await database
         .rawQuery('SELECT * FROM aplicaciones where id_encuesta = "$id"');
     return Encuesta.fromJson(list[0]['content']);
+  }
+
+  static Future<void> updateOnServer(String id, bool b) async {
+    Database database = await _openDB();
+    return database.execute('');
   }
 }

@@ -1,4 +1,5 @@
 import 'package:encuestas_system/data/repositories/encuesta_repository.dart';
+import 'package:encuestas_system/domain/services/aplicacionTimer.dart';
 import 'package:encuestas_system/domain/services/aplicacion_encuesta_service.dart';
 import 'package:encuestas_system/ui/screens/aplicaciones_screen/lista_aplicaciones_screen.dart';
 import 'package:encuestas_system/ui/screens/encuesta_screen/encuesta_no_relacional_screen.dart';
@@ -19,6 +20,7 @@ class AppState extends StatefulWidget {
 class _AppStateState extends State<AppState> {
   @override
   Widget build(BuildContext context) {
+    AplicacionTimer verifAplicaciones = AplicacionTimer();
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => EncuestaRepository()),
