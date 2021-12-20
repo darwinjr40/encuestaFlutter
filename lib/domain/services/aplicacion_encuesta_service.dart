@@ -37,7 +37,6 @@ class AplicacionService with ChangeNotifier {
           idPregunta: pregunta.idPregunta,
           nombrePregunta: pregunta.nombreP,
           opcions: opciones,
-          respuestaText: "",
         );
         respuestas.add(nuevaRespuesta);
       }
@@ -97,7 +96,6 @@ class AplicacionService with ChangeNotifier {
         idPregunta: pregunta.idPregunta,
         nombrePregunta: pregunta.nombreP,
         opcions: opciones,
-        respuestaText: "",
       );
       respuestas.add(nuevaRespuesta);
     } else {

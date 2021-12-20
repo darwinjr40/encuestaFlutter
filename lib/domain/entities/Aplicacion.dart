@@ -9,7 +9,7 @@ class AplicacionEncuesta {
     this.idEncuesta,
     this.nombre,
     this.createAt,
-    //this.updateAt,
+    this.updateAt,
     //required this.encuestador,
     required this.respDePreguntas,
   });
@@ -18,7 +18,7 @@ class AplicacionEncuesta {
   String? idEncuesta;
   String? nombre;
   String? createAt;
-  //String? updateAt;
+  String? updateAt;
   //Encuestador encuestador;
   List<Respuesta> respDePreguntas;
 
@@ -32,7 +32,7 @@ class AplicacionEncuesta {
         id: json["id"],
         idEncuesta: json["id_encuesta"],
         createAt: json["createAt"],
-        //updateAt: json["createUpdate"],
+        updateAt: json["updateAt"],
         nombre: json["nombre"],
         //encuestador: Encuestador.fromMap(json["encuestador"]),
         respDePreguntas: List<Respuesta>.from(
@@ -43,7 +43,7 @@ class AplicacionEncuesta {
         "id": id,
         "id_encuesta": idEncuesta,
         "createAt": createAt,
-        //"createUpdate": updateAt,
+        "updateAt": updateAt,
         "nombre": nombre,
         //"encuestador": encuestador.toMap(),
         "respDePreguntas":

@@ -46,7 +46,7 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.remove_red_eye_outlined),
+            icon: Icon(Icons.visibility_off_outlined),
             onPressed: () async {
               print('encuestas en la bd:');
               List<EncuestaSqlite> encuestasEnLaBD =

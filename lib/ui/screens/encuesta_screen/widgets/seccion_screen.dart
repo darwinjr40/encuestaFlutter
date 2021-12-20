@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'dart:ui';
+import 'package:encuestas_system/domain/entities/Aplicacion.dart';
+import 'package:http/http.dart' as http;
 import 'package:encuestas_system/domain/entities/models.dart';
 import 'package:encuestas_system/domain/services/aplicacion_encuesta_service.dart';
 import 'package:encuestas_system/domain/services/encuestasDB.dart';
+import 'package:encuestas_system/domain/services/internet_connection_check.service.dart';
 import 'package:encuestas_system/ui/screens/encuesta_screen/widgets/card_pregunta_abierta.dart';
 import 'package:encuestas_system/ui/screens/encuesta_screen/widgets/card_pregunta_cerrada.dart';
 import 'package:encuestas_system/ui/screens/encuesta_screen/widgets/card_pregunta_multiple.dart';
@@ -24,6 +27,8 @@ class SeccionScreen extends StatefulWidget {
 class _SeccionScreenState extends State<SeccionScreen> {
   @override
   Widget build(BuildContext context) {
+    final conectionService =
+        Provider.of<ConnectionStatusModel>(context, listen: false);
     return Container(
       // color: Colors.red,
       padding: EdgeInsets.all(10.0),
@@ -75,27 +80,40 @@ class _SeccionScreenState extends State<SeccionScreen> {
                                   'Encuesta lista para enviar al servidor'),
                               actions: [
                                 ElevatedButton(
-                                  child: Text('Aceptar'),
-                                  onPressed: () {
-                                    aplicacionService
-                                            .aplicacion.respDePreguntas =
-                                        aplicacionService.respuestas;
-                                    aplicacionService.aplicacion.createAt =
-                                        aplicacionService.formatFecha(
-                                            DateTime.now().toString());
-                                    print('APLICACION ENCUESTA \n');
-                                    print(jsonEncode(
-                                        aplicacionService.aplicacion));
-                                    aplicacionService.aplicacion.id =
-                                        aplicacionService.formatFecha(
-                                            DateTime.now().toString());
-                                    EncuestaDB.saveAplicacion(
-                                        aplicacionService.aplicacion);
-                                    Navigator.pushNamed(
-                                        context, 'lista_encuesta');
-                                    //Navigator.of(context).pop();
-                                  },
-                                )
+                                    style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                Color.fromRGBO(
+                                                    59, 210, 127, 1.0))),
+                                    child: Text('Enviar'),
+                                    onPressed: () async {
+                                      var aplicaion =
+                                          aplicacionService.aplicacion;
+                                      aplicaion.respDePreguntas =
+                                          aplicacionService.respuestas;
+                                      aplicaion.createAt =
+                                          aplicacionService.formatFecha(
+                                              DateTime.now().toString());
+                                      aplicaion.updateAt =
+                                          aplicacionService.formatFecha(
+                                              DateTime.now().toString());
+                                      aplicacionService.aplicacion.id =
+                                          aplicacionService.formatFecha(
+                                              DateTime.now().toString());
+                                      print('APLICACION ENCUESTA \n');
+                                      //DESARROLLAR EL HILO
+                                      if ('HAY CONECCION BELLEZA' ==
+                                          'HAY CONECCION BELLEZA') {
+                                        await sendAplicacion(aplicaion);
+                                      } else {
+                                        // GUARDAR EN LA BD LOCAL Y DISPARAR EL HILO
+                                        EncuestaDB.saveAplicacion(
+                                            aplicacionService.aplicacion);
+                                      }
+                                      Navigator.pushReplacementNamed(
+                                          context, 'lista_encuesta');
+                                      //Navigator.of(context).pop();
+                                    })
                               ],
                             ),
                           );
@@ -127,6 +145,14 @@ class _SeccionScreenState extends State<SeccionScreen> {
         ),
       ),
     );
+  }
+
+  Future<String> sendAplicacion(AplicacionEncuesta encuestaAplicada) async {
+    String urlAplicacion = 'encuestasapp-e3fc3-default-rtdb.firebaseio.com';
+    final url = Uri.https(urlAplicacion, 'aplicacion_encuesta.json');
+    final respuesta = await http.post(url, body: encuestaAplicada.toJson());
+    final resp = json.decode(respuesta.body);
+    return resp['name'] as String;
   }
 
   List<Widget> cargarPreguntas(List<Pregunta> preguntas) {
