@@ -4,6 +4,7 @@ import 'package:encuestas_system/domain/services/aplicacion_encuesta_service.dar
 import 'package:encuestas_system/domain/services/encuestasDB.dart';
 import 'package:encuestas_system/domain/services/internet_connection_check.service.dart';
 import 'package:encuestas_system/ui/screens/encuesta_screen/widgets/seccion_screen.dart';
+import 'package:encuestas_system/ui/widgets/menu_lateral.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
@@ -32,6 +33,9 @@ class _EncuestaNoRelacionalScreenState
         return shouldPop ?? false;
       },
       child: Scaffold(
+        drawer: Drawer(
+          child: MenuLateral(),
+        ),
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: (aplicacionService.aplicacionMode)
@@ -74,7 +78,7 @@ class _EncuestaNoRelacionalScreenState
     final conectionService =
         Provider.of<ConnectionStatusModel>(context, listen: false);
     return FutureBuilder(
-      future: (conectionService.isOnline)
+      future: (ConnectionStatusModel.isOnline)
           ? encuestaService.getEncuestaNoRelacional(encuesta.idEncuesta)
           : EncuestaDB.getEncuestaById(encuesta.idEncuesta),
       builder: (context, AsyncSnapshot<Encuesta> snapshot) {
@@ -125,6 +129,7 @@ class _EncuestaNoRelacionalScreenState
     applicacionEncuesta.nombre = encuesta.nombreE;
     return listaSeccionesPage;
   }
+
   Future<bool?> _onWillPopScope(BuildContext context) {
     return showDialog(
         context: context,

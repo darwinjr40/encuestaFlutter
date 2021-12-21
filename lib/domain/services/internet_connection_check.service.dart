@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class ConnectionStatusModel extends ChangeNotifier {
   final Connectivity _connectivity = Connectivity();
   late StreamSubscription _connectionSubscription;
-  bool _isOnline = true;
+  static bool _isOnline = false;
 
   ConnectionStatusModel() {
     _connectionSubscription = _connectivity.onConnectivityChanged
@@ -15,13 +15,13 @@ class ConnectionStatusModel extends ChangeNotifier {
     checkInternetConnection();
   }
 
-  bool get isOnline => _isOnline;
+  static bool get isOnline => _isOnline;
 
   Future<bool> checkInternetConnection() async {
     try {
       // Sometimes the callback is called when we reconnect to wifi, but the internet is not really functional
       // This delay try to wait until we are really connected to internet
-      await Future.delayed(const Duration(seconds: 3));
+      await Future.delayed(const Duration(seconds: 0));
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         _isOnline = true;

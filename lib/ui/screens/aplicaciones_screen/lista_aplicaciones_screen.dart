@@ -3,6 +3,7 @@ import 'package:encuestas_system/domain/services/aplicacion_db.dart';
 import 'package:encuestas_system/domain/services/encuestasDB.dart';
 import 'package:encuestas_system/ui/screens/aplicaciones_screen/widgets/card_aplicacion.dart';
 import 'package:encuestas_system/ui/widgets/card_container.dart';
+import 'package:encuestas_system/ui/widgets/menu_lateral.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert' as convert;
 
@@ -19,7 +20,11 @@ class _ListaAplicacionScreenState extends State<ListaAplicacionScreen> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        child: MenuLateral(),
+      ),
       appBar: AppBar(
+        backgroundColor: Color.fromRGBO(59, 210, 127, 1.0),
         title: Text('Aplicaciones hechas'),
       ),
       body: listarAplicaciones(),

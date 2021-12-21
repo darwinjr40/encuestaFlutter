@@ -1,47 +1,68 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:encuestas_system/domain/entities/Aplicacion.dart';
 import 'package:encuestas_system/domain/entities/sqlite/AplicacionSqlite.dart';
 import 'package:encuestas_system/domain/services/encuestasDB.dart';
+import 'package:provider/provider.dart';
 import 'package:sqflite/sqflite.dart';
 
-class AplicacionTimer {
-  final periodo = Duration(seconds: 5);
-  List<AplicacionEncuesta> listaSubir = [];
+import 'internet_connection_check.service.dart';
 
+class AplicacionTimer extends ChangeNotifier {
+  final periodo = Duration(seconds: 5);
   AplicacionTimer() {
     iniciarLoop();
   }
 
   void iniciarLoop() {
-    Timer.periodic(
-        this.periodo, (Timer t) => print('verificando aplicaciones'));
+    /* final conectionService =
+        Provider.of<ConnectionStatusModel>(_, listen: false); */
+    Timer.periodic(this.periodo, (Timer t) => subirAplicaciones());
   }
+
+  void detenerLoop() {}
 
   Future<List<AplicacionEncuesta>> getListAplicacionesNoSubidas() async {
     List<AplicacionEncuesta> listaAplicaciones = [];
-    List<AplicacionSqlite> lista =
-        await EncuestaDB.getAplicacionesNoSubidas(); //* retorna AplicacionesSqlite
+    List<AplicacionSqlite> lista = await EncuestaDB
+        .getAplicacionesNoSubidas(); //* retorna AplicacionesSqlite
     //* convertir a objetos AplicacionEncuesta
     lista.forEach((element) {
       String content = element.content;
       AplicacionEncuesta app = AplicacionEncuesta.fromMap(jsonDecode(content));
       listaAplicaciones.add(app);
-      listaSubir.add(app);
     });
     return listaAplicaciones;
   }
 
-  Future subirAplicaciones(List<AplicacionEncuesta> aplicaciones) async {
-    String urlVeryEncuesta =
-        'encuesta-login-web.herokuapp.com/API/encuestas/B/existeAplicacionEncuesta/';
-    aplicaciones.forEach((encuestaAGuargdar) async{
-      final url = Uri.https(urlVeryEncuesta, encuestaAGuargdar.id!);
+  Future subirAplicaciones() async {
+    String urlVeryEncuesta = 'encuesta-login-web.herokuapp.com';
+    List<AplicacionEncuesta> aplicaciones =
+        await getListAplicacionesNoSubidas();
+
+    if (aplicaciones.length == 0) return;
+    aplicaciones.forEach((encuestaAGuargdar) async {
+      if (!ConnectionStatusModel.isOnline) return;
+      String id = encuestaAGuargdar.id!;
+      print('id de la app a guardar: $id');
+      final url = Uri.https(
+          urlVeryEncuesta, '/API/encuestas/B/existeAplicacionEncuesta/$id');
       final existe = await http.get(url);
-      print('ID_ENCUESTA SQL: ${encuestaAGuargdar.id}, $existe');
+      bool existeFinal = jsonDecode(existe.body);
+      if (!existeFinal) {
+        //SI ES FALSO HAY QUE SUBIRLO
+        //guardar la encuesta
+
+        sendAplicacion(encuestaAGuargdar);
+        EncuestaDB.updateOnServer(encuestaAGuargdar.id!);
+      }
+
+      print('ID_ENCUESTA SQL: ${encuestaAGuargdar.id}, $existeFinal');
     });
+    notifyListeners();
   }
 
   Future<String> sendAplicacion(AplicacionEncuesta encuestaAplicada) async {
@@ -51,6 +72,4 @@ class AplicacionTimer {
     final resp = json.decode(respuesta.body);
     return resp['name'] as String;
   }
-
-  //todo falta hacer un metodo en la base de datos para actualizar el onServer
 }

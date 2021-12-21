@@ -71,7 +71,6 @@ class _SeccionScreenState extends State<SeccionScreen> {
                             ),
                           );
                         } else {
-                          //aplicacionService.aplicacion.idEncuesta =
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
@@ -101,18 +100,11 @@ class _SeccionScreenState extends State<SeccionScreen> {
                                           aplicacionService.formatFecha(
                                               DateTime.now().toString());
                                       print('APLICACION ENCUESTA \n');
-                                      //DESARROLLAR EL HILO
-                                      if ('HAY CONECCION BELLEZA' ==
-                                          'HAY CONECCION BELLEZA') {
-                                        await sendAplicacion(aplicaion);
-                                      } else {
-                                        // GUARDAR EN LA BD LOCAL Y DISPARAR EL HILO
-                                        EncuestaDB.saveAplicacion(
-                                            aplicacionService.aplicacion);
-                                      }
+                                      EncuestaDB.saveAplicacion(
+                                          aplicacionService.aplicacion);
+                                      Navigator.pop(context);
                                       Navigator.pushReplacementNamed(
                                           context, 'lista_encuesta');
-                                      //Navigator.of(context).pop();
                                     })
                               ],
                             ),
@@ -147,13 +139,13 @@ class _SeccionScreenState extends State<SeccionScreen> {
     );
   }
 
-  Future<String> sendAplicacion(AplicacionEncuesta encuestaAplicada) async {
+  /* Future<String> sendAplicacion(AplicacionEncuesta encuestaAplicada) async {
     String urlAplicacion = 'encuestasapp-e3fc3-default-rtdb.firebaseio.com';
     final url = Uri.https(urlAplicacion, 'aplicacion_encuesta.json');
     final respuesta = await http.post(url, body: encuestaAplicada.toJson());
     final resp = json.decode(respuesta.body);
     return resp['name'] as String;
-  }
+  } */
 
   List<Widget> cargarPreguntas(List<Pregunta> preguntas) {
     List<Widget> preguntasCard = [];

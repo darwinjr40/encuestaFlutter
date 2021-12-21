@@ -178,7 +178,6 @@ class _CardEncuestaNoRelacionalState extends State<CardEncuestaNoRelacional> {
     return FutureBuilder(
       future: EncuestaDB.existe(widget.encuesta),
       builder: (context, AsyncSnapshot<bool> snapshot) {
-        print('bool: ${snapshot.data}');
         if (!snapshot.hasData) {
           return Center(
             child: CircularProgressIndicator(
@@ -222,7 +221,7 @@ class _CardEncuestaNoRelacionalState extends State<CardEncuestaNoRelacional> {
         } else {
           return Consumer<ConnectionStatusModel>(
             builder: (context, conection, _) {
-              return (conection.isOnline)
+              return (ConnectionStatusModel.isOnline)
                   ? Container(
                       child: IconButton(
                         icon: Icon(

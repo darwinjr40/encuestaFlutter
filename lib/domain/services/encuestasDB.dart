@@ -72,8 +72,10 @@ class EncuestaDB {
 
   static Future<List<AplicacionSqlite>> getAplicaciones() async {
     Database database = await _openDB();
-    final List<Map<dynamic, dynamic>> aplicacionesMap =
-        await database.query("aplicaciones");
+    final List<Map<dynamic, dynamic>> aplicacionesMap = await database.query(
+        "aplicaciones",
+        where: "aplicaciones.onServer = ?",
+        whereArgs: [0]);
     return List.generate(
       aplicacionesMap.length,
       (i) => AplicacionSqlite(
@@ -85,8 +87,10 @@ class EncuestaDB {
 
   static Future<List<AplicacionSqlite>> getAplicacionesNoSubidas() async {
     Database database = await _openDB();
-    final List<Map<dynamic, dynamic>> aplicacionesMap =
-        await database.query("aplicaciones", where: "aplicaciones.onServer = ?", whereArgs: [0]);
+    final List<Map<dynamic, dynamic>> aplicacionesMap = await database.query(
+        "aplicaciones",
+        where: "aplicaciones.onServer = ?",
+        whereArgs: [0]);
     return List.generate(
       aplicacionesMap.length,
       (i) => AplicacionSqlite(
@@ -127,6 +131,13 @@ class EncuestaDB {
     return Encuesta.fromJson(list[0]['content']);
   }
 
+  static Future<bool> existeEncuesta(String id) async {
+    Database database = await _openDB();
+    List<Map<String, dynamic>> list = await database.rawQuery(
+        'SELECT encuestas.id_encuesta FROM encuestas where id_encuesta = "$id"');
+    return list.length == 1;
+  }
+
   static Future<int> saveAplicacion(AplicacionEncuesta aplicacion) async {
     Database database = await _openDB();
 
@@ -143,8 +154,11 @@ class EncuestaDB {
     return Encuesta.fromJson(list[0]['content']);
   }
 
-  static Future<void> updateOnServer(String id, bool b) async {
+  static Future<int> updateOnServer(String id) async {
     Database database = await _openDB();
-    return database.execute('');
+    return database.update('aplicaciones', {"onServer": 1},
+        where: "id = ?", whereArgs: [id]);
   }
 }
+
+/* 'return database.update("animales", animal.toMap(), where: "id = ?", whereArgs: [animal.id]);' */

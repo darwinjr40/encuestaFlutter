@@ -20,7 +20,6 @@ class AppState extends StatefulWidget {
 class _AppStateState extends State<AppState> {
   @override
   Widget build(BuildContext context) {
-    AplicacionTimer verifAplicaciones = AplicacionTimer();
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => EncuestaRepository()),
@@ -35,6 +34,10 @@ class _AppStateState extends State<AppState> {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final conectionService =
+        Provider.of<ConnectionStatusModel>(context, listen: false);
+    AplicacionTimer verifAplicaciones = AplicacionTimer();
+
     return MaterialApp(
       title: 'Material App',
       initialRoute: 'lista_encuesta',
