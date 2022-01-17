@@ -5,6 +5,7 @@ import 'package:path/path.dart';
 
 class AplicacionDB {
   static Future<Database> _openDB() async {
+    print('+++++++CREANDO LA BASE DE DATOS+++++++');
     return openDatabase(join(await getDatabasesPath(), 'encuestas'),
         onCreate: (db, version) {
       return db.execute(

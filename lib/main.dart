@@ -37,7 +37,6 @@ class MyApp extends StatelessWidget {
     final conectionService =
         Provider.of<ConnectionStatusModel>(context, listen: false);
     AplicacionTimer verifAplicaciones = AplicacionTimer();
-
     return MaterialApp(
       title: 'Material App',
       initialRoute: 'lista_encuesta',

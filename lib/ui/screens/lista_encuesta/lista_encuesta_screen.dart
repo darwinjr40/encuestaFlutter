@@ -126,7 +126,7 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
                 );
               },
             )
-          : FutureBuilder(
+          :  FutureBuilder(
               future: EncuestaDB.getEncuestas(),
               builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
                 if (!snapshot.hasData) {
@@ -193,7 +193,7 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
       }
     });
 
-    //EncuestaDB.createTableEncuestas();
+   // EncuestaDB.createTableEncuestas();
     //EncuestaDB.deleteAplicaciones();
     //EncuestaDB.deleteEncuestas();
     //EncuestaDB.createTableAplicaciones();

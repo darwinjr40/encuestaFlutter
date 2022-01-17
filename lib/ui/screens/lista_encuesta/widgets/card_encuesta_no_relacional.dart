@@ -253,6 +253,7 @@ class _CardEncuestaNoRelacionalState extends State<CardEncuestaNoRelacional> {
                             //Navigator.of(context).pop();
                             await EncuestaDB.delete(widget.encuesta);
                             setState(() {});
+                            Navigator.pop(context);
                           })
                     ],
                   ),

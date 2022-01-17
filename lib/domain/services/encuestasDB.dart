@@ -58,6 +58,7 @@ class EncuestaDB {
   } */
 
   static Future<List<EncuestaSqlite>> getEncuestas() async {
+    print('AHHHHHHHH');
     Database database = await _openDB();
     final List<Map<dynamic, dynamic>> encuestasMap =
         await database.query("encuestas");

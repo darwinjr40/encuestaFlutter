@@ -21,7 +21,7 @@ class ConnectionStatusModel extends ChangeNotifier {
     try {
       // Sometimes the callback is called when we reconnect to wifi, but the internet is not really functional
       // This delay try to wait until we are really connected to internet
-      await Future.delayed(const Duration(seconds: 0));
+      await Future.delayed(const Duration(seconds: 3));
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         _isOnline = true;
