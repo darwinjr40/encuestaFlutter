@@ -1,5 +1,6 @@
 import 'package:encuestas_system/data/repositories/encuesta_repository.dart';
 import 'package:encuestas_system/domain/entities/models.dart';
+import 'package:encuestas_system/domain/services/aplicacion_encuesta_service.dart';
 import 'package:encuestas_system/ui/screens/encuesta_screen/widgets/seccion_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -84,10 +85,8 @@ class _EncuestaScreenState extends State<EncuestaScreen> {
     Encuesta encuesta = data;
     for (var seccion in encuesta.secciones) {
       listaSeccionesPage.add(SeccionScreen(
-        seccion: seccion,
-        index: index,
-        max: encuesta.cantSecciones,
-      ));
+          seccion: seccion, index: index, max: 5 //encuesta.cantSecciones,
+          ));
       index++;
     }
     return listaSeccionesPage;

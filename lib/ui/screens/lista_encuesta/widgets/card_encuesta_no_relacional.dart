@@ -34,6 +34,17 @@ class _CardEncuestaNoRelacionalState extends State<CardEncuestaNoRelacional> {
           seccionesText(widget.encuesta.cantSecciones),
           Row(
             children: [
+              Expanded(
+                  child: aplicaciones(
+                      widget.encuesta.cantAplicaciones.toString())),
+              SizedBox(
+                width: 5.0,
+              ),
+              Expanded(child: fechaLimite(widget.encuesta.fechaLimite)),
+            ],
+          ),
+          Row(
+            children: [
               Expanded(child: verEncuestaButton(context)),
               SizedBox(
                 width: 5.0,
@@ -84,7 +95,6 @@ class _CardEncuestaNoRelacionalState extends State<CardEncuestaNoRelacional> {
             descripcion,
             style: TextStyle(
                 fontSize: 15.0, color: Color.fromRGBO(123, 123, 123, 1.0)),
-            // overflow: TextOverflow.ellipsis,
           ),
         ),
       ),
@@ -147,7 +157,6 @@ class _CardEncuestaNoRelacionalState extends State<CardEncuestaNoRelacional> {
           side:
               BorderSide(width: 1.2, color: Color.fromRGBO(59, 210, 127, 1.0)),
           primary: Colors.white,
-          // primary: Color.fromRGBO(61, 61, 61, 1.0),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18.0),
           ),
@@ -172,9 +181,44 @@ class _CardEncuestaNoRelacionalState extends State<CardEncuestaNoRelacional> {
     );
   }
 
+  Widget aplicaciones(String aplicaciones) {
+    return Padding(
+      padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
+      child: Container(
+        child: Align(
+          alignment: Alignment.topLeft,
+          child: Text(
+            'Aplicaciones: $aplicaciones',
+            style: TextStyle(
+              color: Color.fromRGBO(123, 123, 123, 1.0),
+              fontSize: 14.0,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget fechaLimite(String fechaLimite) {
+    return Padding(
+      padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
+      child: Container(
+        child: Align(
+          alignment: Alignment.topLeft,
+          child: Text(
+            'Fecha Límite: $fechaLimite',
+            style: TextStyle(
+              color: Color.fromRGBO(123, 123, 123, 1.0),
+              fontSize: 14.0,
+              // fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget downloadButton(BuildContext context) {
-    // *si esa encuesta ya está descargado mostrar otro ícono y no hacer nada o preguntar al usuario si
-    // *quiere eliminar la encuesta
     return FutureBuilder(
       future: EncuestaDB.existe(widget.encuesta),
       builder: (context, AsyncSnapshot<bool> snapshot) {
@@ -213,8 +257,6 @@ class _CardEncuestaNoRelacionalState extends State<CardEncuestaNoRelacional> {
                     ],
                   ),
                 );
-                //setState(() {});
-                //EncuestaDB.descargarEncuesta(widget.encuesta);
               },
             ),
           );
@@ -229,9 +271,9 @@ class _CardEncuestaNoRelacionalState extends State<CardEncuestaNoRelacional> {
                           color: Color.fromRGBO(59, 210, 127, 1.0),
                         ),
                         onPressed: () async {
+                          print('se debería descargar');
                           await descargarEncuesta(widget.encuesta, context);
                           setState(() {});
-                          //EncuestaDB.descargarEncuesta(widget.encuesta);
                         },
                       ),
                     )
@@ -241,22 +283,6 @@ class _CardEncuestaNoRelacionalState extends State<CardEncuestaNoRelacional> {
         }
       },
     );
-    /* return (await EncuestaDB.existe(widget.encuesta))
-        ? Container(
-            child: IconButton(
-              icon: Icon(
-                Icons.file_download,
-                color: Color.fromRGBO(59, 210, 127, 1.0),
-              ),
-              onPressed: () {
-                descargarEncuesta(widget.encuesta, context);
-                //EncuestaDB.descargarEncuesta(widget.encuesta);
-              },
-            ),
-          )
-        : Container(
-            child: Text('dsd'),
-          ); */
   }
 
   Future<void> descargarEncuesta(

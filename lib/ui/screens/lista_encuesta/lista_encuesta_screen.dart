@@ -128,13 +128,12 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
             )
           : FutureBuilder(
               future: EncuestaDB.getEncuestas(),
-              builder: (context, AsyncSnapshot<List<EncuestaSqlite>> snapshot) {
+              builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
                 if (!snapshot.hasData) {
                   return Center(
                     child: CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation<Color>(
-                        Color.fromRGBO(59, 210, 127, 1),
-                      ),
+                          Color.fromRGBO(59, 210, 127, 1)),
                     ),
                   );
                 }
@@ -146,7 +145,6 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
                   Encuesta enc = Encuesta.fromMap(jsonResponse);
                   listaBD.add(enc);
                 }
-                //print('listaDB: $listaBD');
                 return Container(
                   padding: EdgeInsets.all(10.0),
                   child: ListView(
@@ -249,14 +247,14 @@ class _ListaEncuestaScreenState extends State<ListaEncuestaScreen> {
     return lista;
   }
 
-  /* Future<void> descargarEncuesta(
+  Future<void> descargarEncuesta(
       Encuesta encuesta, BuildContext context) async {
     final encuestaService =
         Provider.of<EncuestaRepository>(context, listen: false);
     Encuesta e =
         await encuestaService.getEncuestaNoRelacional(encuesta.idEncuesta);
     EncuestaDB.insertEncuesta(e);
-  } */
+  }
 
   Future<void> _recargarLista() async {
     _listaCardEncuestas = [];

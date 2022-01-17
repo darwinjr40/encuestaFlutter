@@ -15,6 +15,7 @@ class AplicacionService with ChangeNotifier {
     for (var respuesta in respuestas) {
       if (respuesta.idPregunta == pregunta.idPregunta) return respuesta;
     }
+    print('existeRespuesta');
     return null;
   }
 
@@ -25,6 +26,7 @@ class AplicacionService with ChangeNotifier {
         break;
       }
     }
+    print('eliminarRespuesta');
   }
 
   void seleccionar(Pregunta pregunta, Opcion opcion) {
@@ -36,6 +38,7 @@ class AplicacionService with ChangeNotifier {
         Respuesta nuevaRespuesta = new Respuesta(
           idPregunta: pregunta.idPregunta,
           nombrePregunta: pregunta.nombreP,
+          tipoPregunta: 'simple',
           opcions: opciones,
         );
         respuestas.add(nuevaRespuesta);
@@ -53,6 +56,7 @@ class AplicacionService with ChangeNotifier {
       Respuesta nuevaRespuesta = new Respuesta(
           idPregunta: pregunta.idPregunta,
           nombrePregunta: pregunta.nombreP,
+          tipoPregunta: 'abierta',
           opcions: [],
           respuestaText: '');
       if (p == null) {
@@ -65,6 +69,8 @@ class AplicacionService with ChangeNotifier {
         if (p.respuestaText == '') eliminarRespuesta(pregunta);
       }
     }
+    print('Seleccionar');
+
     print(jsonEncode(respuestas));
   }
 
@@ -81,9 +87,11 @@ class AplicacionService with ChangeNotifier {
       }
       if (respuesta.opcions.length == 0) eliminarRespuesta(pregunta);
     }
+    print('eliminar seleccion');
   }
 
   void xd(Pregunta pregunta, Opcion opcion) {
+    print('xd');
     if (pregunta.tipo != 'multiple') return;
   }
 
@@ -95,12 +103,14 @@ class AplicacionService with ChangeNotifier {
       Respuesta nuevaRespuesta = new Respuesta(
         idPregunta: pregunta.idPregunta,
         nombrePregunta: pregunta.nombreP,
+        tipoPregunta: 'multiple',
         opcions: opciones,
       );
       respuestas.add(nuevaRespuesta);
     } else {
       p.opcions.add(valor);
     }
+    print('addSeleccion');
   }
 
   void imprimirRespuestas() {

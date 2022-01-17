@@ -16,7 +16,7 @@ class EncuestaRepository extends ChangeNotifier
       Encuesta encuesta = Encuesta.fromMap(item);
       listaEncuestasNoRelacional.add(encuesta);
     }
-    //print('json response: $jsonResponse');
+    //print('json response List No Relacional: $jsonResponse');
     return listaEncuestasNoRelacional;
   }
 
@@ -28,7 +28,7 @@ class EncuestaRepository extends ChangeNotifier
         'https://encuesta-login-web.herokuapp.com/API/encuestas/B/getEncuesta/$id'));
 
     var jsonResponse = convert.jsonDecode(response.body);
-    //print('json response: $jsonResponse');
+    //print('json response Una Encuesta No Relacional: $jsonResponse');
 
     encuesta = Encuesta.fromMap(jsonResponse);
     print('encuesta no relacional: $jsonResponse');

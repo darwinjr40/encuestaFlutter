@@ -5,12 +5,14 @@ class Respuesta {
   Respuesta({
     required this.idPregunta,
     required this.nombrePregunta,
+    required this.tipoPregunta,
     required this.opcions,
     this.respuestaText,
   });
 
   String idPregunta;
   String nombrePregunta;
+  String? tipoPregunta;
   List<Opcion>
       opcions; //* si es cerrada, esa lista solo tiene 1 elemento, si es múltiple tendrá 1 o mas
   String? respuestaText;
@@ -22,6 +24,7 @@ class Respuesta {
   factory Respuesta.fromMap(Map<String, dynamic> json) => Respuesta(
         idPregunta: json["id_pregunta"],
         nombrePregunta: json["nombre_p"],
+        tipoPregunta: json['tipoPregunta'],
         opcions:
             List<Opcion>.from(json["opcions"].map((x) => Opcion.fromMap(x))),
         respuestaText: json["respuesta_text"],
@@ -30,6 +33,7 @@ class Respuesta {
   Map<String, dynamic> toMap() => {
         "id_pregunta": idPregunta,
         "nombre_p": nombrePregunta,
+        "tipoPregunta": tipoPregunta,
         "opcions": List<dynamic>.from(opcions.map((x) => x.toMap())),
         "respuesta_text": respuestaText,
       };

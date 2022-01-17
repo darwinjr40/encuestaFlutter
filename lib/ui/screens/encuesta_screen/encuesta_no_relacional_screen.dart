@@ -19,6 +19,8 @@ class _EncuestaNoRelacionalScreenState
     extends State<EncuestaNoRelacionalScreen> {
   int index = 0;
   int indexPageView = 0;
+  Widget arrowNext = new Icon(Icons.arrow_forward);
+  Widget arrowBack = new Container();
   final PageController pageController = PageController(initialPage: 0);
   @override
   Widget build(BuildContext context) {
@@ -57,8 +59,8 @@ class _EncuestaNoRelacionalScreenState
             IconButton(
                 icon: Icon(Icons.arrow_forward),
                 onPressed: () {
-                  if (indexPageView + 1 < encuesta.cantSecciones)
-                    indexPageView++;
+                  /* if (indexPageView + 1 < encuesta.cantSecciones) */
+                  indexPageView++;
                   print("indexPageView: $indexPageView");
                   pageController.animateToPage(indexPageView,
                       duration: Duration(milliseconds: 250),
@@ -109,6 +111,7 @@ class _EncuestaNoRelacionalScreenState
     final aplicacionService =
         Provider.of<AplicacionService>(context, listen: false);
     int index = 1;
+    print('data: ${data.idEncuesta}');
     Encuesta encuesta = data;
     int cantidadPreguntas = 0;
     for (var seccion in encuesta.secciones) {
@@ -116,7 +119,7 @@ class _EncuestaNoRelacionalScreenState
         child: SeccionScreen(
           index: index,
           seccion: seccion,
-          max: encuesta.cantSecciones,
+          max: encuesta.cantSecciones, //encuesta.cantSecciones,
         ),
       ));
 
@@ -127,6 +130,10 @@ class _EncuestaNoRelacionalScreenState
     aplicacionService.preguntasTotales = cantidadPreguntas;
     applicacionEncuesta.idEncuesta = encuesta.idEncuesta;
     applicacionEncuesta.nombre = encuesta.nombreE;
+    print('aplicacionService.preguntasTotales = $cantidadPreguntas');
+    print('applicacionEncuesta.idEncuesta = ${encuesta.idEncuesta}');
+    print('applicacionEncuesta.nombre = ${encuesta.nombreE}');
+
     return listaSeccionesPage;
   }
 

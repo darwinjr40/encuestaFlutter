@@ -30,7 +30,6 @@ class _SeccionScreenState extends State<SeccionScreen> {
     final conectionService =
         Provider.of<ConnectionStatusModel>(context, listen: false);
     return Container(
-      // color: Colors.red,
       padding: EdgeInsets.all(10.0),
       child: ListView(
         children: [
@@ -54,6 +53,10 @@ class _SeccionScreenState extends State<SeccionScreen> {
                         final aplicacionService =
                             Provider.of<AplicacionService>(context,
                                 listen: false);
+                        print(
+                            'respuestas.length = ${aplicacionService.respuestas.length}');
+                        print(
+                            'preguntastotales.length = ${aplicacionService.preguntasTotales}');
                         if (aplicacionService.respuestas.length <
                             aplicacionService.preguntasTotales) {
                           showDialog(
@@ -138,14 +141,6 @@ class _SeccionScreenState extends State<SeccionScreen> {
       ),
     );
   }
-
-  /* Future<String> sendAplicacion(AplicacionEncuesta encuestaAplicada) async {
-    String urlAplicacion = 'encuestasapp-e3fc3-default-rtdb.firebaseio.com';
-    final url = Uri.https(urlAplicacion, 'aplicacion_encuesta.json');
-    final respuesta = await http.post(url, body: encuestaAplicada.toJson());
-    final resp = json.decode(respuesta.body);
-    return resp['name'] as String;
-  } */
 
   List<Widget> cargarPreguntas(List<Pregunta> preguntas) {
     List<Widget> preguntasCard = [];

@@ -26,7 +26,7 @@ class _CardAplicacionState extends State<CardAplicacion> {
               ],
             ),
           ),
-          iconoServer(widget.status),
+          //iconoServer(widget.status),
         ],
       ),
     );

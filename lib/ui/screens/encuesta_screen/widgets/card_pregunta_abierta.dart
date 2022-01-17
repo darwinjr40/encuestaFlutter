@@ -64,10 +64,10 @@ class _CardPreguntaAbiertaState extends State<CardPreguntaAbierta> {
           final aplicacionService =
               Provider.of<AplicacionService>(context, listen: false);
           var op = new Opcion(
-              idResp: widget.pregunta.opciones[0].idResp,
+              idResp: "idAbierta", //widget.pregunta.opciones[0].idResp,
               nombre: '');
-              setState(() => op.nombre = respAbierta.text);
-          aplicacionService.seleccionar(widget.pregunta,op);
+          setState(() => op.nombre = respAbierta.text);
+          aplicacionService.seleccionar(widget.pregunta, op);
           print(jsonEncode(aplicacionService.respuestas));
         },
         maxLines: 4,
