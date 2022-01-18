@@ -188,7 +188,7 @@ class _CardEncuestaNoRelacionalState extends State<CardEncuestaNoRelacional> {
         child: Align(
           alignment: Alignment.topLeft,
           child: Text(
-            'Aplicaciones: $aplicaciones',
+            'Apli. Disponibles: $aplicaciones',
             style: TextStyle(
               color: Color.fromRGBO(123, 123, 123, 1.0),
               fontSize: 14.0,

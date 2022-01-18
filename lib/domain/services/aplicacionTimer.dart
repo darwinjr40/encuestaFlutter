@@ -55,7 +55,6 @@ class AplicacionTimer extends ChangeNotifier {
       if (!existeFinal) {
         //SI ES FALSO HAY QUE SUBIRLO
         //guardar la encuesta
-
         sendAplicacion(encuestaAGuargdar);
         EncuestaDB.updateOnServer(encuestaAGuargdar.id!);
       }
@@ -65,11 +64,27 @@ class AplicacionTimer extends ChangeNotifier {
     notifyListeners();
   }
 
+/* Encuesta encuesta;
+    var response = await http.get(Uri.parse(
+        'https://encuesta-login-web.herokuapp.com/API/encuestas/B/getEncuesta/$id'));
+    var jsonResponse = convert.jsonDecode(response.body);
+    //print('json response Una Encuesta No Relacional: $jsonResponse');
+    encuesta = Encuesta.fromMap(jsonResponse);
+    print('encuesta no relacional: $jsonResponse');
+    return encuesta; */
   Future<String> sendAplicacion(AplicacionEncuesta encuestaAplicada) async {
-    String urlAplicacion = 'encuestasapp-e3fc3-default-rtdb.firebaseio.com';
-    final url = Uri.https(urlAplicacion, 'aplicacion_encuesta.json');
-    final respuesta = await http.post(url, body: encuestaAplicada.toJson());
-    final resp = json.decode(respuesta.body);
-    return resp['name'] as String;
+    String id = '';
+    var resppuestaDeVeriAplicaciones = await http.post(Uri.parse(
+        'https://encuesta-login-web.herokuapp.com/API/encuestas/B/disminuirAplicaciones/${encuestaAplicada.idEncuesta}'));
+    final resultado = json.decode(resppuestaDeVeriAplicaciones.body);
+    print('RESULTADO DE LA VERIFICACION DE ENCUESTA: $resultado');
+    if (resultado == 'ok') {
+      String urlAplicacion = 'encuestasapp-e3fc3-default-rtdb.firebaseio.com';
+      final url = Uri.https(urlAplicacion, 'aplicacion_encuesta.json');
+      final respuesta = await http.post(url, body: encuestaAplicada.toJson());
+      final resp = json.decode(respuesta.body);
+      id = resp['name'] as String;
+    }
+    return id;
   }
 }
