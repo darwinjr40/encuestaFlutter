@@ -130,7 +130,7 @@ class AplicacionService with ChangeNotifier {
     var fecha = date.substring(0, 10);
     var hora = date.substring(11, 19);
     var year = fecha.split('-');
-    return '${year[2]}-${year[1]}-${year[0]} $hora';
+    return '${year[0]}-${year[1]}-${year[2]} $hora';
   }
 
   void cancelar() {
